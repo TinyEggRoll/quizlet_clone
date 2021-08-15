@@ -1,10 +1,8 @@
 import React from 'react';
 import {
-  ChakraProvider,
-  theme,
+  ChakraProvider
 } from '@chakra-ui/react';
 import LogIn from './Components/LogIn';
-import LogIn2 from './Components/LogIn2';
 import myNewTheme from './assets/theme'
 import {
   BrowserView,

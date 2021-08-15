@@ -10,6 +10,7 @@ import login_Yellow_Mark from '../assets/login_Yellow_Mark.svg'
 import { FcGoogle } from 'react-icons/all';
 import { FaMask } from 'react-icons/all';
 import { useState } from "react";
+
 import socialMediaAuth from "../service/auth"
 import { googleProvider } from "../config/authMethod"
 
@@ -40,7 +41,7 @@ const LogIn = () => {
 
                 </Box>
                 <Flex direction='column' h='100%' justify='center' align='center'>
-                    <Image src={Illustration} alt='login illustration' />
+                    <Image ml='2rem' src={Illustration} alt='login illustration' />
                     <Text mb='1rem'> <Link isExternal href='https://icons8.com/' color='secondary'>Illustration from icons8</Link></Text>
                 </Flex>
             </Flex>
