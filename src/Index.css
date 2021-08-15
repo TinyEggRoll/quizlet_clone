@@ -1,0 +1,14 @@
+* {
+  margin: 0;
+}
+html {
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 100%;
+  box-sizing: border-box;
+}
+
+body {
+  padding: 0px;
+  margin: 0px;
+  line-height: 1.3;
+}
