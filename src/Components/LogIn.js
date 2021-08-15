@@ -11,8 +11,8 @@ import { FcGoogle } from 'react-icons/all';
 import { FaMask } from 'react-icons/all';
 import { useState } from "react";
 
-import socialMediaAuth from "../service/auth"
-import { googleProvider } from "../config/authMethod"
+import socialMediaAuth from '../service/auth'
+import { googleProvider } from "../service/authMethod"
 
 
 const LogIn = () => {
