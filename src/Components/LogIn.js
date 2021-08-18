@@ -3,12 +3,12 @@ import {
     FormLabel,
     FormHelperText,
 } from "@chakra-ui/react"
-import Illustration from '../assets/illustration.png'
-import Logo from '../assets/Quizlet_Logo.svg'
+
+import Logo1 from '../assets/Quizlet_Logo1.svg'
 import Logo2 from '../assets/Quizlet_Logo2.svg'
+import Illustration from '../assets/illustration.png'
 import login_Yellow_Mark from '../assets/login_Yellow_Mark.svg'
-import { FcGoogle } from 'react-icons/all';
-import { FaMask } from 'react-icons/all';
+import { FcGoogle, FaMask } from 'react-icons/all';
 import { useState } from "react";
 
 import socialMediaAuth from '../service/auth'
@@ -34,9 +34,10 @@ const LogIn = () => {
             {/* Login Page : Left */}
             <Flex direction='column' flex='1'>
                 <Box>
+                    {/* Logo */}
                     <Flex p='2rem'>
-                        <Image mr='10px' htmlHeight='100px' htmlWidth='100px' src={Logo} alt='logo 1' />
-                        <Image htmlHeight='100px' htmlWidth='100px' src={Logo2} alt='logo 2' />
+                        <Image mr='10px' src={Logo1} alt='logo 1' />
+                        <Image w='5rem' src={Logo2} alt='logo 2' />
                     </Flex>
 
                 </Box>

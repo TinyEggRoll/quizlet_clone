@@ -9,13 +9,15 @@ import {
   MobileView
 } from "react-device-detect";
 import MobileLogin from './Components/MobileLogin';
+import MainPage from './Components/MainPage';
 
 function App() {
   return (
     <ChakraProvider theme={myNewTheme}>
 
       <BrowserView>
-        <LogIn />
+        {/* <LogIn /> */}
+        <MainPage />
       </BrowserView>
 
       <MobileView>
