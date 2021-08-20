@@ -1,7 +1,7 @@
 import {
     Flex, Image, Button, Avatar, Input,
     InputGroup, InputLeftElement, IconButton, PopoverTrigger, PopoverContent, PopoverBody, Popover, Text,
-    Box, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, useDisclosure, Modal, ModalFooter, FormControl, FormLabel
+    Box, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, useDisclosure, Modal, ModalFooter, FormControl, FormLabel, Heading, Link
 } from "@chakra-ui/react"
 
 import { useState } from 'react';
@@ -27,7 +27,7 @@ const TopNavBar = () => {
     return (
         <div>
             {/* Whole Nav Bar */}
-            <Flex w='100%' p='1rem' bg='primary' height='3.5rem' pos='fixed' top='0' justify='space-between'>
+            <Flex w='100%' p='1rem' bg='primary' h='3.5rem' pos='fixed' top='0' justify='space-between'>
                 {/* Left Side Nav Bar */}
                 <Flex h='100%' align='center'>
                     {/* Logo */}
@@ -48,8 +48,9 @@ const TopNavBar = () => {
                         <PopoverContent ml='6.5rem' w='13rem' h='6rem'>
                             <PopoverBody >
                                 <Flex w='13rem' direction='column' align='flex-start' h='4.5rem' justify='space-evenly'>
-                                    <Button pr='40%' h='2rem' fontSize='sm' color='primary' leftIcon={<IoMdCopy size='1.5rem' />} >Study Set</Button>
-                                    <Button onClick={onOpen} pr='50%' h='2rem' fontSize='sm' color='primary' leftIcon={<FiFolderPlus size='1.5rem' />} >Folder</Button>
+                                    <Button _active={{}} _focus={{}} _hover={{ color: 'black' }} w='90%' justifyContent='flex-start' mt='.2rem' flex='1' fontSize='sm' color='slightShade' color='primary' leftIcon={<IoMdCopy size='1.5rem' />} >Study Set</Button>
+                                    <Button onClick={onOpen} _active={{}} _focus={{}} _hover={{ color: 'black' }} w='90%' justifyContent='flex-start' mt='.2rem' flex='1' fontSize='sm' color='slightShade' color='primary' leftIcon={<FiFolderPlus size='1.5rem' />} >Folder</Button>
+
                                     {/* Create Folder Button Modal */}
                                     <Modal size='xl' motionPreset="slideInRight" isOpen={isOpen} onClose={onClose}>
                                         <ModalOverlay />
@@ -91,6 +92,12 @@ const TopNavBar = () => {
                         <Avatar size='sm' />
                     </Button>
                 </Flex>
+            </Flex>
+
+            {/* Dashboard Page Header (Avatar + Name)*/}
+            <Flex maxW='80rem' margin='0 auto' mt='4rem' align='center'>
+                <Avatar size='lg' />
+                <Heading size='lg' p='2rem' color='gray.700'>Lost4Maple</Heading>
             </Flex>
 
         </div >
