@@ -4,8 +4,8 @@ import {
     FormHelperText,
 } from "@chakra-ui/react"
 
-import Logo1 from '../assets/Quizlet_Logo1.svg'
-import Logo2 from '../assets/Quizlet_Logo2.svg'
+import QuizletLogo from '../assets/Quizlet_Logo1.svg'
+import CloneLogo from '../assets/Quizlet_Logo2.svg'
 import Illustration from '../assets/illustration.png'
 import login_Yellow_Mark from '../assets/login_Yellow_Mark.svg'
 import { FcGoogle, FaMask } from 'react-icons/all';
@@ -15,7 +15,7 @@ import socialMediaAuth from '../service/auth'
 import { googleProvider } from "../service/authMethod"
 
 
-const LogIn = () => {
+const LogIn = (props) => {
     const [submitBtn, setSubmitBtn] = useState(true);
 
     const buttonChangeHandler = () => {
@@ -23,33 +23,36 @@ const LogIn = () => {
     }
 
     const handleLoginHandler = async (provider) => {
-        const res = await socialMediaAuth(provider)
-        console.log(res);
+        const userObject = await socialMediaAuth(provider)
+        if (userObject.displayName !== undefined) {
+            console.log("DATA SENT TO PARENT!");
+            props.userFoundHandler(userObject);
+        }
     }
 
     return (
-        // Left & Right Side Login Page
-        <Flex height='100vh'>
+        // Whole Login Page
+        <Flex >
 
             {/* Login Page : Left */}
-            <Flex direction='column' flex='1'>
+            <Flex direction='column' flex='1' maxW='60rem' >
                 <Box>
                     {/* Logo */}
-                    <Flex p='2rem'>
-                        <Image mr='10px' src={Logo1} alt='logo 1' />
-                        <Image w='5rem' src={Logo2} alt='logo 2' />
+                    <Flex p='1rem' mr='1rem' h='3.5rem'>
+                        <Image mr='10px' src={QuizletLogo} alt='quizlet logo' />
+                        <Image w='5rem' src={CloneLogo} alt='clone logo' />
                     </Flex>
-
                 </Box>
-                <Flex direction='column' h='100%' justify='center' align='center'>
-                    <Image ml='2rem' src={Illustration} alt='login illustration' />
-                    <Text mb='1rem'> <Link isExternal href='https://icons8.com/' color='secondary'>Illustration from icons8</Link></Text>
+
+                <Flex direction='column' m='15rem 1rem'  >
+                    <Image src={Illustration} alt='login illustration' />
+                    <Text> <Link isExternal href='https://icons8.com/' color='secondary'>Illustration from icons8</Link></Text>
                 </Flex>
             </Flex>
 
             {/* Login Page: Right */}
-            <Flex flex='1.5' direction='column' align='center' justifyContent='center' >
-                {/* Log in/up Link */}
+            <Flex flex='1.5' direction='column' align='center' maxW='60rem' m='auto' mt='5rem'>
+                {/* Sign (up/in) Link */}
                 <Flex w='70%' justify='flex-start' >
                     <Link fontSize='2rem' pr='1rem'> Sign up</Link>
                     <Flex direction='column'>
@@ -61,10 +64,10 @@ const LogIn = () => {
                 </Flex>
                 {/* Log in Quick Buttons */}
                 <Flex w='70%' direction='column'>
-                    <Button onClick={() => handleLoginHandler(googleProvider)} mt='3rem' mb='2rem' iconSpacing='2rem' leftIcon={<FcGoogle />} colorScheme='facebook' variant='outline'>
+                    <Button h='5rem' size='lg' onClick={() => handleLoginHandler(googleProvider)} mt='3rem' mb='2rem' iconSpacing='10rem' pr='14rem' leftIcon={<FcGoogle size='2.5rem' />} colorScheme='facebook' variant='outline'>
                         Log in With Google
                     </Button>
-                    <Button mb='2rem' iconSpacing='2rem' leftIcon={<FaMask />} colorScheme='facebook' variant='outline'>
+                    <Button h='5rem' size='lg' mb='2rem' iconSpacing='10rem' pr='13.4rem' leftIcon={<FaMask size='2.5rem' />} colorScheme='facebook' variant='outline'>
                         Log in Anonymously
                     </Button>
                 </Flex>
