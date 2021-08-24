@@ -4,6 +4,7 @@ import LogIn from './LogIn'
 
 import { useState } from 'react';
 import DashboardPageHeader from './DashboardPageHeader';
+import CreateNewSet from './CreateNewSet';
 
 const MainPage = () => {
     const [userInfo, setUserInfo] = useState();
@@ -23,7 +24,8 @@ const MainPage = () => {
             {/* <LogIn userFoundHandler={userFoundHandler} /> */}
             <TopNavBar />
             {/* <StudySets /> */}
-            <DashboardPageHeader />
+            {/* <DashboardPageHeader /> */}
+            <CreateNewSet />
         </>
     )
 }

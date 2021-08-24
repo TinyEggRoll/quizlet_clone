@@ -1,4 +1,4 @@
-const CreateSet = () => {
+const EditNewSet = () => {
     return (
         <div>
 
@@ -6,5 +6,5 @@ const CreateSet = () => {
     )
 }
 
-export default CreateSet
+export default EditNewSet
 
