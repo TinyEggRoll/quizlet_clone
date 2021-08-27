@@ -55,6 +55,7 @@ const CreateNewSet = () => {
                 </Flex>
             </Box>
 
+            {/* Below Is Creation of Every Single Flash Card */}
             <Flex w='100%' h='100vh' bg='#f6f7fb' direction='column'>
                 <CreateNewSingleTerm />
                 <CreateNewSingleTerm />

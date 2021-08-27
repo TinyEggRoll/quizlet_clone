@@ -47,8 +47,8 @@ const TopNavBar = (props) => {
                     <PopoverContent ml='6.5rem' w='13rem' h='6rem'>
                         <PopoverBody >
                             <Flex w='13rem' direction='column' align='flex-start' h='4.5rem' justify='space-evenly'>
-                                <Button _active={{}} _focus={{}} _hover={{ color: 'black' }} w='90%' justifyContent='flex-start' mt='.2rem' flex='1' fontSize='sm' color='slightShade' color='primary' leftIcon={<IoMdCopy size='1.5rem' />} >Study Set</Button>
-                                <Button onClick={onOpen} _active={{}} _focus={{}} _hover={{ color: 'black' }} w='90%' justifyContent='flex-start' mt='.2rem' flex='1' fontSize='sm' color='slightShade' color='primary' leftIcon={<FiFolderPlus size='1.5rem' />} >Folder</Button>
+                                <Button _active={{}} _focus={{}} _hover={{ color: 'black' }} w='90%' justifyContent='flex-start' mt='.2rem' flex='1' fontSize='sm' color='slightShade' leftIcon={<IoMdCopy size='1.5rem' />} >Study Set</Button>
+                                <Button onClick={onOpen} _active={{}} _focus={{}} _hover={{ color: 'black' }} w='90%' justifyContent='flex-start' mt='.2rem' flex='1' fontSize='sm' color='slightShade' leftIcon={<FiFolderPlus size='1.5rem' />} >Folder</Button>
 
                                 {/* Create Folder Button Modal */}
                                 <Modal size='xl' motionPreset="slideInRight" isOpen={isOpen} onClose={onClose}>
