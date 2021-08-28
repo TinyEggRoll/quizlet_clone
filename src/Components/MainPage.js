@@ -25,8 +25,8 @@ const MainPage = () => {
             {/* <LogIn userFoundHandler={userFoundHandler} /> */}
             <TopNavBar />
             {/* <DashboardPageHeader /> */}
-            {/* <CreateNewSet /> */}
-            <SingleStudySet />
+            <CreateNewSet />
+            {/* <SingleStudySet /> */}
         </>
     )
 }

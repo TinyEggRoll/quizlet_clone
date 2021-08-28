@@ -2,14 +2,13 @@ import { Box, Button, Flex, FormLabel, IconButton, Input, Link, Text } from "@ch
 
 import { BiImageAlt, FiTrash, AiOutlineMenu } from 'react-icons/all';
 
-const CreateNewSingleTerm = () => {
+const CreateNewSingleFlashCard = (props) => {
     return (
         <>
             <Flex w='80rem' h='12rem' margin='0 auto' bg='white' direction='column' mt='1.5rem' border='solid #EDF2F7 .25rem' borderRadius='1rem'>
-
                 {/* Top Half of New Card | Numbering of Cards*/}
                 <Flex p='.75rem' justify='space-between'>
-                    <Text color='gray.400' textAlign='center' w='2.5rem'>1</Text>
+                    <Text color='gray.400' textAlign='center' w='2.5rem'>{props.cardNum}</Text>
                     <Box >
                         <IconButton _hover={{ color: '#ffdc62' }} mr='.5rem' variant='ghost' icon={<AiOutlineMenu size='1.5rem' />} />
                         <IconButton _hover={{ color: '#ffdc62' }} variant='ghost' icon={<FiTrash size='1.5rem' />} />
@@ -21,17 +20,15 @@ const CreateNewSingleTerm = () => {
                     {/* Left Term */}
                     <Flex direction='column' w='50%' mr='3rem'>
                         <Input pb='.25rem' _focus={{ borderBottom: 'solid #ffdc62 .25rem' }} borderBottom='solid black .25rem' variant='unstyled' fontSize='lg' placeholder='Enter term' />
-                        <Flex justify='space-between'>
+                        <Flex>
                             <FormLabel mt='.25rem' color='gray.400'>TERM</FormLabel>
-                            <Link mt='.25rem' fontSize='sm' color='secondary'>CHOOSE LANGUAGE</Link>
                         </Flex>
                     </Flex>
                     {/* Right Term */}
                     <Flex direction='column' w='40%' mr='3rem'>
                         <Input pb='.25rem' _focus={{ borderBottom: 'solid #ffdc62 .25rem' }} borderBottom='solid black .25rem' variant='unstyled' fontSize='lg' placeholder='Enter definition' />
-                        <Flex justify='space-between'>
+                        <Flex>
                             <FormLabel mt='.25rem' color='gray.400'>DEFINITION</FormLabel>
-                            <Link mt='.25rem' fontSize='sm' color='secondary'>CHOOSE LANGUAGE</Link>
                         </Flex>
                     </Flex>
                     {/* Add Image Button */}
@@ -42,4 +39,4 @@ const CreateNewSingleTerm = () => {
     )
 }
 
-export default CreateNewSingleTerm
+export default CreateNewSingleFlashCard
