@@ -1,18 +1,15 @@
-import {
-    Box,
-    Button,
-    Flex, Heading, IconButton, Input, Link, Text, Textarea,
-} from "@chakra-ui/react"
+import { useState } from 'react';
 
+import { Box, Button, Flex, Heading, IconButton, Input, Link, Text, Textarea } from "@chakra-ui/react"
 import { animateScroll as scroll } from 'react-scroll'
 
 import { MdKeyboard, BiTransfer } from 'react-icons/all';
 
-import { useState } from 'react';
-import CreateNewSingleFlashCard from "./CreateNewSingleFlashCard";
-import AddCardButton from "./AddCardButton";
+import CreateNewSingleFlashCard from "../Fragments/CreateNewSingleFlashCard";
+import AddCardButton from "../Fragments/AddCardButton";
+import TopNavBarNotFocus from '../Fragments/TopNavBarNotFocus';
 
-const CreateNewSet = () => {
+const CreateNewStudySet = () => {
     const [resize, setResize] = useState("none")
 
     const [numFlashCards, setNumFlashCards] = useState([
@@ -39,8 +36,12 @@ const CreateNewSet = () => {
 
     return (
         <>
-            {/* Entire Header */}
+            {/* Top Nav Bar */}
+            <TopNavBarNotFocus />
+
+            {/* Entire Main Content */}
             <Box>
+                {/* Top Half of Content */}
                 {/* Create a new study set + Create Button*/}
                 <Flex maxW='80rem' h='6.875rem' margin='0 auto' mt='6rem' mb='1.5rem' p='0 2.5rem' align='center' justify='space-between'>
                     <Heading size='md'>Create a new study set</Heading>
@@ -87,9 +88,8 @@ const CreateNewSet = () => {
                 <Button onClick={scrollToTop}>Click Me To Scroll Up</Button>
             </Flex>
 
-
         </>
     )
 }
 
-export default CreateNewSet
+export default CreateNewStudySet

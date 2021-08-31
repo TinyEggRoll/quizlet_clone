@@ -1,9 +1,10 @@
 import {
     Flex, Image, Text, Button
 } from "@chakra-ui/react"
-import Illustration from '../assets/illustration.png'
-import Logo1 from '../assets/Quizlet_Logo1.svg'
-import Logo2 from '../assets/Quizlet_Logo2.svg'
+
+import Illustration from '../../assets/illustration.png'
+import Logo1 from '../../assets/Quizlet_Logo1.svg'
+import Logo2 from '../../assets/Quizlet_Logo2.svg'
 
 const MobileLogin = () => {
     return (

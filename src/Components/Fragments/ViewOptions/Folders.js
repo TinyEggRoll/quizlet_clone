@@ -1,18 +1,21 @@
-import {
-    Flex, Link, Popover, PopoverTrigger, Button, PopoverBody, PopoverContent, Box, InputGroup, InputLeftElement, Input
-} from "@chakra-ui/react"
+import { Flex, Link, Popover, PopoverTrigger, Button, PopoverBody, PopoverContent, Box } from "@chakra-ui/react"
 
-import { RiArrowDownSLine, AiOutlineSearch } from 'react-icons/all';
+import { Link as LinkRouter } from 'react-router-dom'
 
-const StudySets = () => {
+import { RiArrowDownSLine } from 'react-icons/all';
+
+
+const Folders = () => {
     return (
         <>
             <Box>
                 <Box borderBottom='.15rem #edeff4 solid'>
                     {/* Dashboard Page Inner */}
                     <Flex margin='0 auto' mt='1rem' maxW='80rem'>
-                        <Link fontSize='sm' fontWeight='600' pb='1rem' mr='2rem' _hover={{ textDecoration: ' none' }} borderBottom='.15rem solid #3ccfcf' mb='-.15rem' >Study sets</Link>
-                        <Link fontSize='sm' fontWeight='400' pb='1rem' _hover={{ color: 'highlight', mb: '-.15rem', borderBottom: '2px solid #ffdc62' }}  >Folders</Link>
+                        <LinkRouter to='/'>
+                            <Link fontSize='sm' fontWeight='400' pb='1rem' mr='2rem' _hover={{ color: 'highlight', mb: '-.15rem', borderBottom: '2px solid #ffdc62' }} >Study sets</Link>
+                        </LinkRouter>
+                        <Link fontSize='sm' fontWeight='600' pb='1rem' mb='-.15rem' _hover={{ textDecoration: ' none' }} borderBottom='.15rem solid #3ccfcf'>Folders</Link>
                     </Flex>
                 </Box>
 
@@ -32,17 +35,12 @@ const StudySets = () => {
                                 </PopoverBody>
                             </PopoverContent>
                         </Popover>
-
-                        {/* Search (Study Sets) Bar */}
-                        <InputGroup mr='10rem' h='2rem' w='17rem' >
-                            <InputLeftElement pb='1.4rem' pointerEvents="none" children={<AiOutlineSearch size='1.1rem' color='#4A5568' />} />
-                            <Input pb='1rem' fontSize='sm' _focus={{ borderBottom: '3px solid #4257b2' }} borderBottom='3px solid #edeff4' variant='unstyled' h='2rem' type="tel" placeholder="Search your sets" />
-                        </InputGroup>
                     </Flex>
                 </Box>
+
             </Box>
         </>
     )
 }
 
-export default StudySets
+export default Folders

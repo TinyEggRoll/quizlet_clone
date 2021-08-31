@@ -4,15 +4,15 @@ import {
     FormHelperText,
 } from "@chakra-ui/react"
 
-import QuizletLogo from '../assets/Quizlet_Logo1.svg'
-import CloneLogo from '../assets/Quizlet_Logo2.svg'
-import Illustration from '../assets/illustration.png'
-import login_Yellow_Mark from '../assets/login_Yellow_Mark.svg'
+import QuizletLogo from '../../assets/Quizlet_Logo1.svg'
+import CloneLogo from '../../assets/Quizlet_Logo2.svg'
+import Illustration from '../../assets/illustration.png'
+import login_Yellow_Mark from '../../assets/login_Yellow_Mark.svg'
 import { FcGoogle, FaMask } from 'react-icons/all';
 import { useState } from "react";
 
-import socialMediaAuth from '../service/auth'
-import { googleProvider } from "../service/authMethod"
+import socialMediaAuth from '../../service/auth'
+import { googleProvider } from "../../service/authMethod"
 
 
 const LogIn = (props) => {

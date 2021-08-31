@@ -1,16 +1,17 @@
-import {
-    Flex, Image, Button, Avatar, Input,
-    InputGroup, InputLeftElement, IconButton, PopoverTrigger, PopoverContent, PopoverBody, Popover, Text,
-    Box, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, useDisclosure, Modal, ModalFooter, FormControl, FormLabel, Heading, Link
-} from "@chakra-ui/react"
-
 import { useState } from 'react';
 
-import QuizletLogo from '../assets/Quizlet_Logo_White1.svg'
-import CloneLogo from '../assets/Quizlet_Logo_White2.svg'
+import {
+    Flex, Image, Button, Avatar, Input, InputGroup, InputLeftElement, IconButton, PopoverTrigger, PopoverContent, PopoverBody, Popover,
+    Box, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, useDisclosure, Modal, ModalFooter, FormControl, FormLabel
+} from "@chakra-ui/react"
+
+import { Link as LinkRouter } from 'react-router-dom'
+
+
+import QuizletLogo from '../../assets/Quizlet_Logo_White1.svg'
+import CloneLogo from '../../assets/Quizlet_Logo_White2.svg'
 import { RiArrowDownSLine, AiOutlineSearch, AiOutlineBell, FiFolderPlus, IoMdCopy } from 'react-icons/all';
 
-// import './Testing.css';
 
 const TopNavBar = (props) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -24,31 +25,38 @@ const TopNavBar = (props) => {
         event.preventDefault();
         setFolderName('');
     }
+
     return (
         //  Whole Nav Bar 
         <Flex w='100%' p='1rem' bg='primary' h='3.5rem' pos='fixed' top='0' justify='space-between' zIndex='1'>
+
             {/* Left Side Nav Bar */}
             <Flex h='100%' align='center'>
-                {/* Logo */}
+                {/* Logos */}
                 <Flex mr='1rem'>
                     <Image mr='10px' src={QuizletLogo} alt='quizlet logo' />
                     <Image w='5rem' src={CloneLogo} alt='clone logo' />
                 </Flex>
                 {/* Your Library Button */}
-                <Flex direction='column' justify='center'>
-                    <Button h='2rem' id='bob' mt='.7rem' mb='.63rem' mr='1rem' _hover={{ bg: 'primary' }} fontSize='sm' color='#fff' bg='primary' rightIcon={<RiArrowDownSLine color='#fff' size='1.5rem' />}>Your Library </Button>
-                    <Box background='#ffdc62' ml='1rem' w='68%' h='.33rem' borderTopRightRadius='.25rem' borderTopLeftRadius='.25rem'></Box>
-                </Flex>
+                <LinkRouter to='/'>
+                    <Flex direction='column' justify='center'>
+                        <Button h='2rem' id='bob' mt='.7rem' mb='.63rem' mr='1rem' _hover={{ bg: 'primary' }} fontSize='sm' color='#fff' bg='primary' rightIcon={<RiArrowDownSLine color='#fff' size='1.5rem' />}>Your Library </Button>
+                        <Box background='#ffdc62' ml='1rem' w='68%' h='.33rem' borderTopRightRadius='.25rem' borderTopLeftRadius='.25rem'></Box>
+                    </Flex>
+                </LinkRouter>
                 {/* Create (Study Sets / Folder) Button */}
                 <Popover>
                     <PopoverTrigger >
                         <Button h='2rem' fontSize='sm' color='primary' bg='#7dd' rightIcon={<RiArrowDownSLine size='1.5rem' />}>Create </Button>
                     </PopoverTrigger>
-                    <PopoverContent ml='6.5rem' w='13rem' h='6rem'>
+                    <PopoverContent ml='5.5rem' w='12rem' h='6rem'>
                         <PopoverBody >
-                            <Flex w='13rem' direction='column' align='flex-start' h='4.5rem' justify='space-evenly'>
-                                <Button _active={{}} _focus={{}} _hover={{ color: 'black' }} w='90%' justifyContent='flex-start' mt='.2rem' flex='1' fontSize='sm' color='slightShade' leftIcon={<IoMdCopy size='1.5rem' />} >Study Set</Button>
-                                <Button onClick={onOpen} _active={{}} _focus={{}} _hover={{ color: 'black' }} w='90%' justifyContent='flex-start' mt='.2rem' flex='1' fontSize='sm' color='slightShade' leftIcon={<FiFolderPlus size='1.5rem' />} >Folder</Button>
+                            {/* Study Set | Folder */}
+                            <Flex direction='column' align='flex-start' h='5rem' justify='space-evenly'>
+                                <LinkRouter to='/create-set'>
+                                    <Button variant='ghost' _hover={{ color: 'black', fontWeight: '700', bg: '#E2E8F0' }} w='10rem' h='2rem' justifyContent='flex-start' mt='.2rem' fontSize='sm' color='slightShade' leftIcon={<IoMdCopy size='1.7rem' />} >Study Set</Button>
+                                </LinkRouter>
+                                <Button variant='ghost' onClick={onOpen} _hover={{ color: 'black', fontWeight: '700', bg: '#E2E8F0' }} w='10rem' h='2rem' justifyContent='flex-start' mt='.2rem' fontSize='sm' color='slightShade' leftIcon={<FiFolderPlus size='1.5rem' />} >Folder</Button>
 
                                 {/* Create Folder Button Modal */}
                                 <Modal size='xl' motionPreset="slideInRight" isOpen={isOpen} onClose={onClose}>

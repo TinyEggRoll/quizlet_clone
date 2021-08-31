@@ -1,4 +1,4 @@
-import { Box, Button, Flex, FormLabel, IconButton, Input, Link, Text } from "@chakra-ui/react"
+import { Box, Flex, FormLabel, IconButton, Input, Text } from "@chakra-ui/react"
 
 import { BiImageAlt, FiTrash, AiOutlineMenu } from 'react-icons/all';
 

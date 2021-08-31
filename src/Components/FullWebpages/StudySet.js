@@ -1,14 +1,21 @@
 import { Avatar, Box, Button, Flex, Heading, IconButton, Popover, PopoverBody, PopoverContent, PopoverTrigger, Text, Textarea } from "@chakra-ui/react"
+
 import { FiCopy, MdRotateRight, FaPencilAlt, FaSpellCheck, BsFileEarmarkText, GiMatchHead, GiFallingBlob } from 'react-icons/all';
 import { AiOutlineArrowLeft, AiOutlineArrowRight, MdKeyboard, BiFullscreen } from 'react-icons/all';
 import { AiOutlinePlus, BiPencil, FiUpload, RiInformationLine, BiDotsHorizontalRounded } from 'react-icons/all';
-import { RiArrowDownSLine, AiFillStar, FiVolume2 } from 'react-icons/all';
-import SingleFlashCard from "./SingleFlashCard";
+import { RiArrowDownSLine } from 'react-icons/all';
+
+import TopNavBar from "../Fragments/TopNavBar";
+import SingleFlashCard from "../Fragments/SingleFlashCard";
 
 
 const SingleStudySet = () => {
     return (
         <>
+            {/* Top Nav Bar */}
+            <TopNavBar />
+
+            {/* Main Content */}
             <Box margin='0 auto' mt='6rem' maxW='80rem' >
                 {/* Heading + Main Content */}
                 <Box p='2.5rem' >

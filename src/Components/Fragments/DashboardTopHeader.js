@@ -1,11 +1,6 @@
-import {
-    Flex, Avatar, Heading
-} from "@chakra-ui/react"
+import { Flex, Avatar, Heading } from "@chakra-ui/react"
 
-import StudySets from "./ViewOptions/StudySets"
-import Folders from "./ViewOptions/Folders"
-
-const DashboardPageHeader = () => {
+const DashboardTopHeader = () => {
     return (
         <>
             {/* Dashboard Page Header (Avatar + Name)*/}
@@ -15,11 +10,8 @@ const DashboardPageHeader = () => {
                 <Heading size='lg' p='2rem' color='gray.700'></Heading>
                 {/* {props.userInfo.displayName} */}
             </Flex>
-
-            <StudySets />
-            {/* <Folders /> */}
         </>
     )
 }
 
-export default DashboardPageHeader
+export default DashboardTopHeader
