@@ -10,8 +10,6 @@ import AddCardButton from "../Fragments/AddCardButton";
 import TopNavBarNotFocus from '../Fragments/TopNavBarNotFocus';
 
 const CreateNewStudySet = () => {
-    const [resize, setResize] = useState("none")
-
     const [numFlashCards, setNumFlashCards] = useState([
         { text: '', cardNum: '1', id: 'g1' }
     ]);
@@ -52,7 +50,7 @@ const CreateNewStudySet = () => {
                 <Flex maxW='80rem' margin='0 auto' p='0 2.5rem' direction='column'>
                     <Input _focus={{ borderBottom: 'solid #4257b2 .125rem' }} mb='1.5rem' variant='filled' placeholder='Enter a title, like "Biology - Chapter 22: Evolution"' />
                     <Flex>
-                        <Textarea _focus={{ borderBottom: 'solid #4257b2 .125rem' }} resize={resize} h='6.5rem' mr='1.5rem' variant='filled' flex='1' placeholder='Add a description...' />
+                        <Textarea _focus={{ borderBottom: 'solid #4257b2 .125rem' }} resize={'none'} h='6.5rem' mr='1.5rem' variant='filled' flex='1' placeholder='Add a description...' />
                         <Flex flex='1' direction='column' ml='1.5rem'>
                             <Input _focus={{ borderBottom: 'solid #4257b2 .125rem' }} mb='1.5rem' variant='filled' placeholder='School name' />
                             <Input isDisabled variant='filled' placeholder='Course' />

@@ -1,4 +1,4 @@
-import { Avatar, Box, Button, Flex, Heading, IconButton, Popover, PopoverBody, PopoverContent, PopoverTrigger, Text, Textarea } from "@chakra-ui/react"
+import { Avatar, Box, Button, Flex, Heading, IconButton, Popover, PopoverBody, PopoverContent, PopoverTrigger, Text } from "@chakra-ui/react"
 
 import { FiCopy, MdRotateRight, FaPencilAlt, FaSpellCheck, BsFileEarmarkText, GiMatchHead, GiFallingBlob } from 'react-icons/all';
 import { AiOutlineArrowLeft, AiOutlineArrowRight, MdKeyboard, BiFullscreen } from 'react-icons/all';

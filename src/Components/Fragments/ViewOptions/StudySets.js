@@ -1,6 +1,6 @@
-import { Flex, Link, Popover, PopoverTrigger, Button, PopoverBody, PopoverContent, Box, InputGroup, InputLeftElement, Input } from "@chakra-ui/react"
+import { Flex, Popover, PopoverTrigger, Button, PopoverBody, PopoverContent, Box, InputGroup, InputLeftElement, Input, Text } from "@chakra-ui/react"
 
-import { Link as LinkRouter } from 'react-router-dom'
+import { Link as LinkRoute } from 'react-router-dom'
 
 import { RiArrowDownSLine, AiOutlineSearch } from 'react-icons/all';
 
@@ -11,10 +11,10 @@ const StudySets = () => {
                 <Box borderBottom='.15rem #edeff4 solid'>
                     {/* Dashboard Page Inner */}
                     <Flex margin='0 auto' mt='1rem' maxW='80rem'>
-                        <Link fontSize='sm' fontWeight='600' pb='1rem' mr='2rem' _hover={{ textDecoration: ' none' }} borderBottom='.15rem solid #3ccfcf' mb='-.15rem' >Study sets</Link>
-                        <LinkRouter to='/folders'>
-                            <Link fontSize='sm' fontWeight='400' pb='1rem' _hover={{ color: 'highlight', mb: '-.15rem', borderBottom: '2px solid #ffdc62' }}  >Folders</Link>
-                        </LinkRouter>
+                        <Text fontSize='sm' fontWeight='600' pb='1rem' mr='2rem' _hover={{ textDecoration: ' none' }} borderBottom='.15rem solid #3ccfcf' mb='-.15rem' >Study sets</Text>
+                        <LinkRoute to='/folders'>
+                            <Text fontSize='sm' fontWeight='400' pb='1rem' _hover={{ color: 'highlight', mb: '-.15rem', borderBottom: '2px solid #ffdc62' }}  >Folders</Text>
+                        </LinkRoute>
                     </Flex>
                 </Box>
 

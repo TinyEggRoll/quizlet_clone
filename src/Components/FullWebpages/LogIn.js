@@ -1,39 +1,38 @@
-import {
-    Flex, Image, Text, Box, Link, Button, Input, FormControl,
-    FormLabel,
-    FormHelperText,
-} from "@chakra-ui/react"
+import { useState } from "react";
+
+import { Flex, Image, Text, Box, Link, Button, Input, FormControl, FormLabel, FormHelperText, } from "@chakra-ui/react"
+import { useHistory } from 'react-router-dom'
 
 import QuizletLogo from '../../assets/Quizlet_Logo1.svg'
 import CloneLogo from '../../assets/Quizlet_Logo2.svg'
 import Illustration from '../../assets/illustration.png'
 import login_Yellow_Mark from '../../assets/login_Yellow_Mark.svg'
 import { FcGoogle, FaMask } from 'react-icons/all';
-import { useState } from "react";
 
-import socialMediaAuth from '../../service/auth'
-import { googleProvider } from "../../service/authMethod"
-
+import { useAuth } from '../../context/auth-context'
 
 const LogIn = (props) => {
+    const { googleLogin } = useAuth()
+    const history = useHistory()
+
     const [submitBtn, setSubmitBtn] = useState(true);
 
     const buttonChangeHandler = () => {
         setSubmitBtn(false);
     }
 
-    const handleLoginHandler = async (provider) => {
-        const userObject = await socialMediaAuth(provider)
-        if (userObject.displayName !== undefined) {
-            console.log("DATA SENT TO PARENT!");
-            props.userFoundHandler(userObject);
+    const googleLoginHandler = async () => {
+        try {
+            await googleLogin()
+            history.push('/dashboard')
+        } catch {
+            console.log('There is an error in GOOGLE LOGIN loginJS')
         }
     }
 
     return (
         // Whole Login Page
         <Flex >
-
             {/* Login Page : Left */}
             <Flex direction='column' flex='1' maxW='60rem' >
                 <Box>
@@ -64,10 +63,10 @@ const LogIn = (props) => {
                 </Flex>
                 {/* Log in Quick Buttons */}
                 <Flex w='70%' direction='column'>
-                    <Button h='5rem' size='lg' onClick={() => handleLoginHandler(googleProvider)} mt='3rem' mb='2rem' iconSpacing='10rem' pr='14rem' leftIcon={<FcGoogle size='2.5rem' />} colorScheme='facebook' variant='outline'>
+                    <Button onClick={googleLoginHandler} h='5rem' size='lg' mt='3rem' mb='2rem' iconSpacing='10rem' pr='14rem' leftIcon={<FcGoogle size='2.5rem' />} colorScheme='facebook' variant='outline'>
                         Log in With Google
                     </Button>
-                    <Button h='5rem' size='lg' mb='2rem' iconSpacing='10rem' pr='13.4rem' leftIcon={<FaMask size='2.5rem' />} colorScheme='facebook' variant='outline'>
+                    <Button isDisabled h='5rem' size='lg' mb='2rem' iconSpacing='10rem' pr='13.4rem' leftIcon={<FaMask size='2.5rem' />} colorScheme='facebook' variant='outline'>
                         Log in Anonymously
                     </Button>
                 </Flex>
@@ -75,9 +74,9 @@ const LogIn = (props) => {
                 <Flex w='70%' >
                     <FormControl>
                         <FormLabel>Username</FormLabel>
-                        <Input mb='1rem' placeholder='  login is not accepted at this time' isDisabled borderBottom='4px solid black' variant='unstyled' type="email" />
+                        <Input isDisabled mb='1rem' pl='.5rem' placeholder='Username and PW is not accepted. Please Use Google Login' borderBottom='4px solid black' variant='unstyled' type="email" />
                         <FormLabel>Password</FormLabel>
-                        <Input borderBottom='4px solid black' variant='unstyled' type="Password" />
+                        <Input pl='.5rem' borderBottom='4px solid black' variant='unstyled' type="password" />
                         <Flex justify='flex-end'>
                             <FormHelperText mb='1rem'> <Link color='secondary'>Forgot?</Link></FormHelperText>
                         </Flex >

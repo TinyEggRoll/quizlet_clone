@@ -1,11 +1,11 @@
 import { useState } from 'react';
 
 import {
-    Flex, Image, Button, Avatar, Input, InputGroup, InputLeftElement, IconButton, PopoverTrigger, PopoverContent, PopoverBody, Popover,
-    Box, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, useDisclosure, Modal, ModalFooter, FormControl, FormLabel
+    Text, Flex, Image, Button, Avatar, Input, InputGroup, InputLeftElement, IconButton, PopoverTrigger, PopoverContent, PopoverBody, Popover,
+    ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, useDisclosure, Modal, ModalFooter, FormControl, FormLabel
 } from "@chakra-ui/react"
 
-import { Link as LinkRouter } from 'react-router-dom'
+import { Link as LinkRoute } from 'react-router-dom'
 
 
 import QuizletLogo from '../../assets/Quizlet_Logo_White1.svg'
@@ -13,7 +13,7 @@ import CloneLogo from '../../assets/Quizlet_Logo_White2.svg'
 import { RiArrowDownSLine, AiOutlineSearch, AiOutlineBell, FiFolderPlus, IoMdCopy } from 'react-icons/all';
 
 
-const TopNavBarNotFocus = (props) => {
+const TopNavBar = ({ logoutHandler, currentUser }) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [folderName, setFolderName] = useState('');
 
@@ -38,11 +38,9 @@ const TopNavBarNotFocus = (props) => {
                     <Image w='5rem' src={CloneLogo} alt='clone logo' />
                 </Flex>
                 {/* Your Library Button */}
-                <LinkRouter to='/'>
-                    <Flex direction='column' justify='center'>
-                        <Button h='2rem' id='bob' mt='.7rem' mb='.63rem' mr='1rem' _hover={{ bg: 'primary' }} fontSize='sm' color='#fff' bg='primary' rightIcon={<RiArrowDownSLine color='#fff' size='1.5rem' />}>Your Library </Button>
-                    </Flex>
-                </LinkRouter>
+                <LinkRoute to='/dashboard'>
+                    <Button h='2rem' id='bob' mt='.7rem' mb='.63rem' mr='1rem' _hover={{ bg: 'primary' }} fontSize='sm' color='#fff' bg='primary' rightIcon={<RiArrowDownSLine color='#fff' size='1.5rem' />}>Your Library </Button>
+                </LinkRoute>
                 {/* Create (Study Sets / Folder) Button */}
                 <Popover>
                     <PopoverTrigger >
@@ -52,9 +50,9 @@ const TopNavBarNotFocus = (props) => {
                         <PopoverBody >
                             {/* Study Set | Folder */}
                             <Flex direction='column' align='flex-start' h='5rem' justify='space-evenly'>
-                                <LinkRouter to='/create-set'>
+                                <LinkRoute to='/create-set'>
                                     <Button variant='ghost' _hover={{ color: 'black', fontWeight: '700', bg: '#E2E8F0' }} w='10rem' h='2rem' justifyContent='flex-start' mt='.2rem' fontSize='sm' color='slightShade' leftIcon={<IoMdCopy size='1.7rem' />} >Study Set</Button>
-                                </LinkRouter>
+                                </LinkRoute>
                                 <Button variant='ghost' onClick={onOpen} _hover={{ color: 'black', fontWeight: '700', bg: '#E2E8F0' }} w='10rem' h='2rem' justifyContent='flex-start' mt='.2rem' fontSize='sm' color='slightShade' leftIcon={<FiFolderPlus size='1.5rem' />} >Folder</Button>
 
                                 {/* Create Folder Button Modal */}
@@ -94,13 +92,44 @@ const TopNavBarNotFocus = (props) => {
                 {/* Notification Button */}
                 <IconButton mr='1rem' _hover={{ opacity: '.7' }} size='sm' isRound color='#cedaf3' bg='hsla(0,0%,100%,0.1)' aria-label="Search Notifications" icon={<AiOutlineBell size='1.2rem' />} />
                 {/* Avatar Button */}
-                <Button mr='1rem' variant='unstyled' >
-                    <Avatar size='sm' />
-                    {/* src={props.userInfo.photoURL} */}
-                </Button>
+                <Popover>
+                    <PopoverTrigger>
+                        <Button mr='1rem' variant='unstyled' >
+                            <Avatar size='sm' src={currentUser.photoURL} />
+                        </Button>
+                    </PopoverTrigger>
+                    <PopoverContent w='15rem'>
+                        <PopoverBody p='0rem'>
+                            <Flex direction='column' >
+
+                                {/* 1/3 | Avatar + Name + Email */}
+                                <Flex justify='flex-start' align='center' borderBottom='solid .25rem #f6f7fb' flex='1' p='.5rem 1.5rem'>
+                                    <Avatar size='sm' mr='1rem' src={currentUser.photoURL} />
+                                    <Flex direction='column' maxW='8.5rem' >
+                                        <Text fontSize='sm' isTruncated >{currentUser.displayName}</Text>
+                                        <Text fontSize='sm' isTruncated >{currentUser.email}</Text>
+                                    </Flex>
+                                </Flex>
+
+                                {/* 2/3 | Profile | Night mode | Settings */}
+                                <Flex direction='column' borderBottom='solid .25rem #f6f7fb'>
+                                    <Button _focus={{}} pl='1.5rem' justifyContent='flex-start' variant='ghost' color='gray.500' >Profile</Button>
+                                    <Button _focus={{}} pl='1.5rem' justifyContent='flex-start' variant='ghost' color='gray.500' >Night mode</Button>
+                                    <Button _focus={{}} pl='1.5rem' justifyContent='flex-start' variant='ghost' color='gray.500' >Settings</Button>
+                                </Flex>
+
+                                {/* 3/3 | Log out */}
+                                <Flex direction='column' h='3rem' justify='center' >
+                                    <Button onClick={logoutHandler} h='4rem' _focus={{}} pl='1.5rem' justifyContent='flex-start' variant='ghost' color='gray.500' >Log Out</Button>
+                                </Flex>
+                            </Flex>
+                        </PopoverBody>
+                    </PopoverContent>
+                </Popover>
+
             </Flex>
         </Flex>
     )
 }
 
-export default TopNavBarNotFocus
+export default TopNavBar
