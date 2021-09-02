@@ -5,7 +5,7 @@ import {
     Box, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, useDisclosure, Modal, ModalFooter, FormControl, FormLabel
 } from "@chakra-ui/react"
 
-import { Link as LinkRoute } from 'react-router-dom'
+import { Link as LinkRoute, useLocation } from 'react-router-dom'
 
 
 import QuizletLogo from '../../assets/Quizlet_Logo_White1.svg'
@@ -14,6 +14,7 @@ import { RiArrowDownSLine, AiOutlineSearch, AiOutlineBell, FiFolderPlus, IoMdCop
 
 
 const TopNavBar = ({ logoutHandler, currentUser }) => {
+    const location = useLocation()
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [folderName, setFolderName] = useState('');
 
@@ -38,10 +39,11 @@ const TopNavBar = ({ logoutHandler, currentUser }) => {
                     <Image w='5rem' src={CloneLogo} alt='clone logo' />
                 </Flex>
                 {/* Your Library Button */}
-                <LinkRoute to='/dashboard'>
+                <LinkRoute to={'/' + currentUser.displayName.replace(/ /g, '') + '/view/sets'}>
                     <Flex direction='column' justify='center'>
                         <Button h='2rem' id='bob' mt='.7rem' mb='.63rem' mr='1rem' _hover={{ bg: 'primary' }} fontSize='sm' color='#fff' bg='primary' rightIcon={<RiArrowDownSLine color='#fff' size='1.5rem' />}>Your Library </Button>
-                        <Box background='#ffdc62' ml='1rem' w='68%' h='.33rem' borderTopRightRadius='.25rem' borderTopLeftRadius='.25rem'></Box>
+                        {/* If the page is Create-set, it will not render the yellow underline tone. */}
+                        {location.pathname !== '/create-set' && <Box background='#ffdc62' ml='1rem' w='68%' h='.33rem' borderTopRightRadius='.25rem' borderTopLeftRadius='.25rem'></Box>}
                     </Flex>
                 </LinkRoute>
                 {/* Create (Study Sets / Folder) Button */}

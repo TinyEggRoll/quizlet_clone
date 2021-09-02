@@ -1,10 +1,11 @@
 import { Flex, Popover, PopoverTrigger, Button, PopoverBody, PopoverContent, Box, InputGroup, InputLeftElement, Input, Text } from "@chakra-ui/react"
 
-import { Link as LinkRoute } from 'react-router-dom'
+import { useParams, Link as LinkRoute } from 'react-router-dom'
 
 import { RiArrowDownSLine, AiOutlineSearch } from 'react-icons/all';
 
 const StudySets = () => {
+    const { userName } = useParams();
     return (
         <>
             <Box>
@@ -12,7 +13,7 @@ const StudySets = () => {
                     {/* Dashboard Page Inner */}
                     <Flex margin='0 auto' mt='1rem' maxW='80rem'>
                         <Text fontSize='sm' fontWeight='600' pb='1rem' mr='2rem' _hover={{ textDecoration: ' none' }} borderBottom='.15rem solid #3ccfcf' mb='-.15rem' >Study sets</Text>
-                        <LinkRoute to='/folders'>
+                        <LinkRoute to='folders'>
                             <Text fontSize='sm' fontWeight='400' pb='1rem' _hover={{ color: 'highlight', mb: '-.15rem', borderBottom: '2px solid #ffdc62' }}  >Folders</Text>
                         </LinkRoute>
                     </Flex>

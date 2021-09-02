@@ -7,9 +7,13 @@ import { MdKeyboard, BiTransfer } from 'react-icons/all';
 
 import CreateNewSingleFlashCard from "../Fragments/CreateNewSingleFlashCard";
 import AddCardButton from "../Fragments/AddCardButton";
-import TopNavBarNotFocus from '../Fragments/TopNavBarNotFocus';
+import TopNavBar from '../Fragments/TopNavBar';
+
+import { useAuth } from '../../context/auth-context'
 
 const CreateNewStudySet = () => {
+    const { currentUser, logOut } = useAuth();
+
     const [numFlashCards, setNumFlashCards] = useState([
         { text: '', cardNum: '1', id: 'g1' }
     ]);
@@ -35,13 +39,13 @@ const CreateNewStudySet = () => {
     return (
         <>
             {/* Top Nav Bar */}
-            <TopNavBarNotFocus />
+            <TopNavBar currentUser={currentUser} />
 
             {/* Entire Main Content */}
             <Box>
                 {/* Top Half of Content */}
                 {/* Create a new study set + Create Button*/}
-                <Flex maxW='80rem' h='6.875rem' margin='0 auto' mt='6rem' mb='1.5rem' p='0 2.5rem' align='center' justify='space-between'>
+                <Flex maxW='80rem' h='6.875rem' margin='0 auto' mt='5.5rem' mb='1.5rem' p='0 2.5rem' align='center' justify='space-between'>
                     <Heading size='md'>Create a new study set</Heading>
                     <Button id='bottomEnd' size='lg' bg='secondary' color='white'>Create</Button>
                 </Flex>

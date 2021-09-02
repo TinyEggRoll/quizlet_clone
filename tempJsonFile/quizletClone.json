@@ -1,0 +1,34 @@
+{
+  "totalStudySets": [
+    {
+      "title": "chapter1",
+      "flashcards": [
+        {
+          "term": "hola",
+          "definition": "hello",
+          "star": false
+        },
+        {
+          "term": "adios",
+          "definition": "bye",
+          "star": true
+        }
+      ]
+    },
+    {
+      "title": "chapter2",
+      "flashcards": [
+        {
+          "term": "hola",
+          "definition": "hello",
+          "star": false
+        },
+        {
+          "term": "adios",
+          "definition": "bye",
+          "star": true
+        }
+      ]
+    }
+  ]
+}

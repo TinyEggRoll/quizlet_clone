@@ -21,10 +21,12 @@ const LogIn = (props) => {
         setSubmitBtn(false);
     }
 
+
     const googleLoginHandler = async () => {
         try {
             await googleLogin()
-            history.push('/dashboard')
+            history.push('/')
+
         } catch {
             console.log('There is an error in GOOGLE LOGIN loginJS')
         }

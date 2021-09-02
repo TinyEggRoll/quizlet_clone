@@ -4,10 +4,10 @@ const DashboardTopHeader = ({ currentUser }) => {
     return (
         <>
             {/* Dashboard Page Header (Avatar + Name)*/}
-            <Flex maxW='80rem' margin='0 auto' mt='6rem' mb='2rem' align='center'>
-                <Avatar size='lg' src={currentUser.photoURL} />
+            <Flex maxW='80rem' margin='0 auto' mt='5.5rem' mb='2rem' align='center'>
+                <Avatar mr='2rem' size='lg' src={currentUser.photoURL} />
                 {/* src={props.userInfo.photoURL} */}
-                <Heading size='lg' p='2rem' color='gray.700'></Heading>
+                <Heading size='lg' color='gray.700'>{currentUser.displayName}</Heading>
                 {/* {props.userInfo.displayName} */}
             </Flex>
         </>

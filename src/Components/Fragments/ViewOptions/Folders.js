@@ -12,7 +12,7 @@ const Folders = () => {
                 <Box borderBottom='.15rem #edeff4 solid'>
                     {/* Dashboard Page Inner */}
                     <Flex margin='0 auto' mt='1rem' maxW='80rem'>
-                        <LinkRoute to='/dashboard'>
+                        <LinkRoute to='sets'>
                             <Text fontSize='sm' fontWeight='400' pb='1rem' mr='2rem' _hover={{ color: 'highlight', mb: '-.15rem', borderBottom: '2px solid #ffdc62' }} >Study sets</Text>
                         </LinkRoute>
                         <Text fontSize='sm' fontWeight='600' pb='1rem' mb='-.15rem' _hover={{ textDecoration: ' none' }} borderBottom='.15rem solid #3ccfcf'>Folders</Text>

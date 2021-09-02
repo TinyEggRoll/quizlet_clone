@@ -1,4 +1,6 @@
-import { Avatar, Box, Button, Flex, Heading, IconButton, Popover, PopoverBody, PopoverContent, PopoverTrigger, Text } from "@chakra-ui/react"
+import { useHistory } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import { Avatar, Box, Button, Flex, Heading, IconButton, Popover, PopoverBody, PopoverContent, PopoverTrigger, Text, Textarea } from "@chakra-ui/react"
 
 import { FiCopy, MdRotateRight, FaPencilAlt, FaSpellCheck, BsFileEarmarkText, GiMatchHead, GiFallingBlob } from 'react-icons/all';
 import { AiOutlineArrowLeft, AiOutlineArrowRight, MdKeyboard, BiFullscreen } from 'react-icons/all';
@@ -8,25 +10,55 @@ import { RiArrowDownSLine } from 'react-icons/all';
 import TopNavBar from "../Fragments/TopNavBar";
 import SingleFlashCard from "../Fragments/SingleFlashCard";
 
+import { useAuth } from '../../context/auth-context'
+
+import firebase from 'firebase'
 
 const SingleStudySet = () => {
+    const [studySetTitle, setStudySetTitle] = useState()
+    const [studySetFlashCards, setStudySetFlashCards] = useState()
+    const [numFlashCards, setNumFlashCards] = useState()
+
+    const { currentUser, logOut } = useAuth();
+    const history = useHistory()
+
+    const logoutHandler = async () => {
+        try {
+            await logOut()
+            history.push('/login')
+        } catch {
+            console.log("There is an error in dashboardJS!")
+        }
+    }
+
+    useEffect(() => {
+        const totalStudySets = firebase.database().ref('totalStudySets')
+        totalStudySets.on('value', (snapshot) => {
+            const todos = snapshot.val()
+
+            setStudySetFlashCards(todos[0]['flashcards'])
+            setStudySetTitle(todos[0]['title'])
+            setNumFlashCards(todos[0]['flashcards'].length)
+        })
+    }, [])
+
     return (
         <>
             {/* Top Nav Bar */}
-            <TopNavBar />
+            <TopNavBar logoutHandler={logoutHandler} currentUser={currentUser} />
 
             {/* Main Content */}
-            <Box margin='0 auto' mt='6rem' maxW='80rem' >
+            <Box margin='0 auto' mt='3.5rem' maxW='80rem' >
                 {/* Heading + Main Content */}
                 <Box p='2.5rem' >
                     {/* Heading */}
                     <Flex >
-                        <Heading mb='1.5rem' size='lg'>'Insert Heading Here'</Heading>
+                        <Heading mb='2.5rem' size='lg'>{studySetTitle}</Heading>
                     </Flex>
                     {/* Main Content */}
                     <Flex margin='0 auto'>
                         {/* Left Side Main Content */}
-                        <Flex direction='column' justify='space-around' mr='6rem' >
+                        <Flex direction='column' justify='space-between' mr='6rem' >
                             {/* Group Top: Study */}
                             <Flex direction='column' justify='space-evenly' w='158px' h='240px'>
                                 <Text pl='0.5rem' color='gray.400' fontSize='sm'>Study</Text>
@@ -68,13 +100,17 @@ const SingleStudySet = () => {
                 </Box>
 
 
-                {/* Created A Flex Inside a Flex Just TO Create a Gray Divider */}
+                {/* Created A Flex Inside a Flex Just To Create a Gray Divider */}
                 {/* Avatar + Settings For Study Set */}
                 <Flex w='71%' p='2.5rem' >
                     <Flex pt='2.5rem' paddingX='0rem' w='100%' justify='space-between' borderTop='solid #EDF2F7 .2rem'>
                         {/* Avatar */}
                         <Flex>
-                            <Avatar />
+                            <Avatar src={currentUser.photoURL} mr='0.5rem' />
+                            <Flex direction='column' justify='center' align='flex-start'>
+                                <Text mb='0.2rem' fontSize='x-small' color='gray.400'>Created by</Text>
+                                <Text fontWeight='600' fontSize='sm'>{currentUser.displayName}</Text>
+                            </Flex>
                         </Flex>
                         {/* Settings for Study Set */}
                         <Flex>
@@ -88,7 +124,15 @@ const SingleStudySet = () => {
                 </Flex>
 
                 <Flex paddingX='2.5rem' w='71%'>
-                    <Text>Integrated Chinese Level 1 Part 1 Lesson 3 vocabulary; Dialogue I and Dialogue II. Character Pinyin (English).</Text>
+                    <Textarea bg='white' resize={'none'} isReadOnly variant='unstyled'>
+                        This is the Integrated Chinese Level 1 Part 1 Lesson 6: Making Appointments. The vocabulary is based on Dialogue 1.
+                        --------------------------------------------------
+                        ~All of the words in Dialogue 1 have been added. Dialogue 2 will be in a separate set. Dialogue 1 vocabulary have been released go find them! (At this profile)
+                        ~Set Format~
+                        Chinese Character ---> (Pinyin) English Meaning
+                        NO COPYING THIS SET! If so, then after these sets will be set as private or password.
+                        --------------------------…
+                    </Textarea>
                 </Flex>
 
             </Box>
@@ -97,9 +141,9 @@ const SingleStudySet = () => {
             <Box bg='#f6f7fb' mt='2.5rem' h='100vh' >
                 <Box margin='0 auto' maxW='80rem' >
                     {/* All Flash Cards  */}
-                    <Flex p='2.5rem' w='70%' justify='space-between' >
+                    <Flex p='2.5rem' w='70%' align='center' justify='space-between' >
                         {/* Number of Terms In This Set */}
-                        <Heading size='md'>Terms in this set (124)</Heading>
+                        <Heading size='md'>Terms in this set ({numFlashCards})</Heading>
                         {/* Sort FlashCards Button */}
                         <Popover>
                             <PopoverTrigger >
@@ -118,8 +162,15 @@ const SingleStudySet = () => {
                     </Flex>
 
                     {/* Below is A List of Each Flash Card */}
-                    <SingleFlashCard />
-                    <SingleFlashCard />
+                    {studySetFlashCards.map((card, index) => (
+                        <SingleFlashCard
+                            id={index}
+                            key={index}
+                            cardTerm={card.term}
+                            cardDefinition={card.definition}
+                            cardStar={card.star}
+                        />
+                    ))}
 
                 </Box>
             </Box>

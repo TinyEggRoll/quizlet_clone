@@ -3,8 +3,9 @@ import { BrowserView, MobileView } from "react-device-detect";
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 
 import myNewTheme from './assets/theme'
+import PrivateRoute from './Components/PrivateRoute'
 import Dashboard from './Components/FullWebpages/Dashboard';
-import DashboardFolders from './Components/FullWebpages/DashboardFolders';
+import Temp from './Components/FullWebpages/Temp';
 import LogIn from './Components/FullWebpages/LogIn';
 import MobileLogin from './Components/FullWebpages/MobileLogin';
 import CreateNewStudySet from './Components/FullWebpages/CreateNewStudySet';
@@ -15,21 +16,21 @@ function App() {
   return (
     <ChakraProvider theme={myNewTheme}>
       <BrowserView>
-        <Router>
-          <Switch>
-            <AuthProvider>
+        <AuthProvider>
+          <Router>
+            <Switch>
               {/* Login Page */}
               <Route exact path='/login' component={LogIn} />
 
               {/* User Page */}
-              <Route exact path='/dashboard' component={Dashboard} />
-              <Route path='/folders' component={DashboardFolders} />
-              <Route path='/create-set' component={CreateNewStudySet} />
-              <Route path='/study-set' component={StudySet} />
-            </AuthProvider>
-          </Switch>
+              <PrivateRoute exact path='/' component={Temp} />
+              <PrivateRoute path='/:userName/view/:container' component={Dashboard} />
+              <PrivateRoute path='/create-set' component={CreateNewStudySet} />
+              <PrivateRoute path='/study-set' component={StudySet} />
+            </Switch>
 
-        </Router>
+          </Router>
+        </AuthProvider>
       </BrowserView>
 
       <MobileView>
