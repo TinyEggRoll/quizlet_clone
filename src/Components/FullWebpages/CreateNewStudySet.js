@@ -13,10 +13,13 @@ import { useAuth } from '../../context/auth-context'
 
 const CreateNewStudySet = () => {
     const { currentUser, logOut } = useAuth();
-
     const [numFlashCards, setNumFlashCards] = useState([
-        { text: '', cardNum: '1', id: 'g1' }
+        { term: '', definition: '', cardIndex: '', id: Math.floor((Math.random() * 10000000) + 1) }
     ]);
+
+
+    const [tempTermCards, setTempTermCards] = useState([]);
+    const [tempDefinitionCards, setTempDefinitionCards] = useState([]);
 
     const scrollToBottom = () => {
         scroll.scrollToBottom();
@@ -29,18 +32,63 @@ const CreateNewStudySet = () => {
     const addNewCardHandler = () => {
         setNumFlashCards(prevFlashCards => {
             const updatedFlashCards = [...prevFlashCards];
-            updatedFlashCards.push({ text: '', cardNum: updatedFlashCards.length + 1, id: Math.random().toString() });
+            const tempCard = { term: '', definition: '', cardIndex: '', id: Math.floor((Math.random() * 10000000) + 1) }
+            updatedFlashCards.push(tempCard);
             return updatedFlashCards;
         });
-
         scrollToBottom();
+    }
+
+    const deleteCardHandler = (cardIndex) => {
+        setNumFlashCards(prevFlashCards => {
+            const updatedFlashCards = [...prevFlashCards];
+            updatedFlashCards.splice(cardIndex, 1)
+            return updatedFlashCards
+        })
+    }
+
+    const updateTermHandler = (newTerm, cardId) => {
+        let indexOfMatchCard = tempTermCards.findIndex((obj) => obj.id === cardId)
+
+        if (indexOfMatchCard === -1) {
+            setTempTermCards((prevFlashCards) => {
+                const updatedFlashCards = [...prevFlashCards];
+                const tempCard = { term: newTerm, id: cardId }
+                updatedFlashCards.push(tempCard);
+                return updatedFlashCards;
+            })
+        } else {
+            setTempTermCards((prevFlashCards) => {
+                const updatedFlashCards = [...prevFlashCards];
+                updatedFlashCards[indexOfMatchCard].term = newTerm
+                return updatedFlashCards;
+            })
+        }
+    }
+
+    const updateDefinitionHandler = (newDefinition, cardId) => {
+        let indexOfMatchCard = tempDefinitionCards.findIndex((obj) => obj.id === cardId)
+
+        if (indexOfMatchCard === -1) {
+            setTempDefinitionCards((prevFlashCards) => {
+                const updatedFlashCards = [...prevFlashCards];
+                const tempCard = { term: newDefinition, id: cardId }
+                updatedFlashCards.push(tempCard);
+                return updatedFlashCards;
+            })
+        } else {
+            setTempDefinitionCards((prevFlashCards) => {
+                const updatedFlashCards = [...prevFlashCards];
+                updatedFlashCards[indexOfMatchCard].term = newDefinition
+                return updatedFlashCards;
+            })
+        }
     }
 
     return (
         <>
             {/* Top Nav Bar */}
             <TopNavBar currentUser={currentUser} />
-
             {/* Entire Main Content */}
             <Box>
                 {/* Top Half of Content */}
@@ -83,10 +131,22 @@ const CreateNewStudySet = () => {
 
             {/* Below Is Creation of Every Single Flash Card */}
             <Flex w='100%' h='100%' bg='#f6f7fb' direction='column'>
-                {numFlashCards.map((currCard) => (
-                    <CreateNewSingleFlashCard cardNum={currCard.cardNum} key={currCard.id} id={currCard.id} />
+                {numFlashCards.map((currCard, index) => (
+                    <CreateNewSingleFlashCard
+                        updateTermHandler={updateTermHandler}
+                        updateDefinitionHandler={updateDefinitionHandler}
+                        deleteCardHandler={deleteCardHandler}
+                        totalCards={numFlashCards.length}
+                        term={currCard.term}
+                        definition={currCard.definition}
+                        cardIndex={index}
+                        key={currCard.id}
+                        id={currCard.id} />
                 ))}
+                {/* Add New Flash Card Button */}
                 <AddCardButton addNewCardHandler={addNewCardHandler} />
+
+                {/* Scroll To Top Button */}
                 <Button onClick={scrollToTop}>Click Me To Scroll Up</Button>
             </Flex>
 

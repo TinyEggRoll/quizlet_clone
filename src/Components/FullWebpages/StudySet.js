@@ -129,7 +129,7 @@ const SingleStudySet = () => {
                         --------------------------------------------------
                         ~All of the words in Dialogue 1 have been added. Dialogue 2 will be in a separate set. Dialogue 1 vocabulary have been released go find them! (At this profile)
                         ~Set Format~
-                        Chinese Character ---> (Pinyin) English Meaning
+                        Chinese Character --- (Pinyin) English Meaning
                         NO COPYING THIS SET! If so, then after these sets will be set as private or password.
                         --------------------------…
                     </Textarea>
