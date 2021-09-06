@@ -5,16 +5,31 @@ import {
     Box, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, useDisclosure, Modal, ModalFooter, FormControl, FormLabel
 } from "@chakra-ui/react"
 
-import { Link as LinkRoute, useLocation } from 'react-router-dom'
+import { Link as LinkRoute, useLocation, useHistory } from 'react-router-dom'
 
 
 import QuizletLogo from '../../assets/Quizlet_Logo_White1.svg'
 import CloneLogo from '../../assets/Quizlet_Logo_White2.svg'
 import { RiArrowDownSLine, AiOutlineSearch, AiOutlineBell, FiFolderPlus, IoMdCopy } from 'react-icons/all';
 
+import { useAuth } from '../../context/auth-context'
 
-const TopNavBar = ({ logoutHandler, currentUser }) => {
+
+const TopNavBar = ({ currentUser }) => {
+    const { logOut } = useAuth();
+    const history = useHistory()
     const location = useLocation()
+
+    const logoutHandler = async () => {
+        try {
+            await logOut()
+            history.push('/login')
+        } catch {
+            console.log("There is an error in top nav bar!")
+        }
+    }
+
+
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [folderName, setFolderName] = useState('');
 
@@ -68,9 +83,9 @@ const TopNavBar = ({ logoutHandler, currentUser }) => {
                                         <ModalCloseButton color='white' />
                                         <ModalBody>
                                             <FormControl>
-                                                <Input p='1rem' pl='.4rem' size='lg' _focus={{ borderBottom: '4px solid #ffdc62' }} onChange={folderNameChangeHandler} placeholder='Enter a title' value={folderName} borderBottom='4px solid black' variant='unstyled' />
+                                                <Input mt='1rem' pl='.4rem' size='lg' _focus={{ borderBottom: '4px solid #ffdc62' }} onChange={folderNameChangeHandler} placeholder='Enter a title' value={folderName} borderBottom='4px solid black' variant='unstyled' />
                                                 <FormLabel>TITLE</FormLabel>
-                                                <Input p='1rem' pl='.4rem' size='lg' _focus={{ borderBottom: '4px solid #ffdc62' }} placeholder='Enter a description (optional)' borderBottom='4px solid black' variant='unstyled' type="email" />
+                                                <Input mt='1rem' pl='.4rem' size='lg' _focus={{ borderBottom: '4px solid #ffdc62' }} placeholder='Enter a description (optional)' borderBottom='4px solid black' variant='unstyled' type="email" />
                                                 <FormLabel fontSize='sm'>DESCRIPTION</FormLabel>
                                             </FormControl>
                                         </ModalBody>

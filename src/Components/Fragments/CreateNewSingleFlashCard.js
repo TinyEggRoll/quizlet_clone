@@ -15,7 +15,6 @@ const CreateNewSingleFlashCard = ({ term, definition, id, cardIndex, totalCards,
     const definitionHandler = () => {
         updateDefinitionHandler(definitionInputRef.current.value, id)
     }
-
     return (
         <>
             <Flex w='80rem' h='12rem' margin='0 auto' bg='white' direction='column' mt='1.5rem' border='solid #EDF2F7 .25rem' borderRadius='1rem'>
@@ -25,7 +24,7 @@ const CreateNewSingleFlashCard = ({ term, definition, id, cardIndex, totalCards,
                     <Box >
                         <IconButton _hover={{ color: '#ffdc62' }} mr='.5rem' variant='ghost' icon={<AiOutlineMenu size='1.5rem' />} />
                         {/* Delete Flashcard Button */}
-                        <IconButton isDisabled={totalCards !== 1 ? false : true} onClick={() => { deleteCardHandler(cardIndex) }} _hover={{ color: '#ffdc62' }} variant='ghost' icon={<FiTrash size='1.5rem' />} />
+                        <IconButton isDisabled={totalCards >= 3 ? false : true} onClick={() => { deleteCardHandler(cardIndex) }} _hover={{ color: '#ffdc62' }} variant='ghost' icon={<FiTrash size='1.5rem' />} />
                     </Box>
                 </Flex>
 

@@ -1,4 +1,3 @@
-import { useHistory } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import { Avatar, Box, Button, Flex, Heading, IconButton, Popover, PopoverBody, PopoverContent, PopoverTrigger, Text, Textarea } from "@chakra-ui/react"
 
@@ -14,38 +13,29 @@ import { useAuth } from '../../context/auth-context'
 
 import firebase from 'firebase'
 
-const SingleStudySet = () => {
+const StudySet = () => {
     const [studySetTitle, setStudySetTitle] = useState()
     const [studySetFlashCards, setStudySetFlashCards] = useState()
     const [numFlashCards, setNumFlashCards] = useState()
 
-    const { currentUser, logOut } = useAuth();
-    const history = useHistory()
-
-    const logoutHandler = async () => {
-        try {
-            await logOut()
-            history.push('/login')
-        } catch {
-            console.log("There is an error in dashboardJS!")
-        }
-    }
+    const { currentUser } = useAuth();
 
     useEffect(() => {
         const totalStudySets = firebase.database().ref('totalStudySets')
         totalStudySets.on('value', (snapshot) => {
             const todos = snapshot.val()
-
+            console.log(todos)
             setStudySetFlashCards(todos[0]['flashcards'])
             setStudySetTitle(todos[0]['title'])
             setNumFlashCards(todos[0]['flashcards'].length)
+            console.log(studySetFlashCards)
         })
     }, [])
 
     return (
         <>
             {/* Top Nav Bar */}
-            <TopNavBar logoutHandler={logoutHandler} currentUser={currentUser} />
+            <TopNavBar currentUser={currentUser} />
 
             {/* Main Content */}
             <Box margin='0 auto' mt='3.5rem' maxW='80rem' >
@@ -178,5 +168,5 @@ const SingleStudySet = () => {
     )
 }
 
-export default SingleStudySet
+export default StudySet
 
