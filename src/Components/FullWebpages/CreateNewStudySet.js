@@ -54,7 +54,7 @@ const CreateNewStudySet = () => {
 
     const updateTermHandler = (newTerm, cardId) => {
         let indexOfMatchCard = tempTermCards.findIndex((obj) => obj.id === cardId)
-        console.log(`indexOfMatchCard`, indexOfMatchCard)
+
         if (indexOfMatchCard === -1) {
             setTempTermCards((prevFlashCards) => {
                 const updatedFlashCards = [...prevFlashCards];
@@ -72,7 +72,7 @@ const CreateNewStudySet = () => {
     }
 
     const createNewStudySet = () => {
-        console.log(studySetTitleRef.current.value)
+
     }
 
     const updateTitle = (e) => {
