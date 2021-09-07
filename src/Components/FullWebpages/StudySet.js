@@ -1,10 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Avatar, Box, Button, Flex, Heading, IconButton, Popover, PopoverBody, PopoverContent, PopoverTrigger, Text, Textarea } from "@chakra-ui/react"
 
-import { FiCopy, MdRotateRight, FaPencilAlt, FaSpellCheck, BsFileEarmarkText, GiMatchHead, GiFallingBlob } from 'react-icons/all';
-import { AiOutlineArrowLeft, AiOutlineArrowRight, MdKeyboard, BiFullscreen } from 'react-icons/all';
-import { AiOutlinePlus, BiPencil, FiUpload, RiInformationLine, BiDotsHorizontalRounded } from 'react-icons/all';
-import { RiArrowDownSLine } from 'react-icons/all';
+import { HiOutlinePlusCircle, RiArrowDownSLine, BiPencil, FiUpload, RiInformationLine, BiDotsHorizontalRounded, AiOutlineArrowLeft, AiOutlineArrowRight, MdKeyboard, BiFullscreen, FiCopy, MdRotateRight, FaPencilAlt, FaSpellCheck, BsFileEarmarkText, GiMatchHead, GiFallingBlob } from 'react-icons/all';
 
 import TopNavBar from "../Fragments/TopNavBar";
 import SingleFlashCard from "../Fragments/SingleFlashCard";
@@ -20,17 +17,23 @@ const StudySet = () => {
 
     const { currentUser } = useAuth();
 
-    useEffect(() => {
-        const totalStudySets = firebase.database().ref('totalStudySets')
-        totalStudySets.on('value', (snapshot) => {
-            const todos = snapshot.val()
-            console.log(todos)
-            setStudySetFlashCards(todos[0]['flashcards'])
-            setStudySetTitle(todos[0]['title'])
-            setNumFlashCards(todos[0]['flashcards'].length)
-            console.log(studySetFlashCards)
-        })
-    }, [])
+    // useEffect(() => {
+    //     const totalStudySets = firebase.database().ref('totalStudySets')
+    //     totalStudySets.on('value', (snapshot) => {
+    //         const studySetList = []
+
+    //         const todos = snapshot.val()
+    //         console.log(todos)
+    //         for (let id in todos) {
+    //             studySetList.push(todos[id])
+    //         }
+
+    //         // setStudySetFlashCards(todos[0]['flashcards'])
+    //         // setStudySetTitle(todos[0]['title'])
+    //         // setNumFlashCards(todos[0]['flashcards'].length)
+
+    //     })
+    // }, [])
 
     return (
         <>
@@ -38,7 +41,7 @@ const StudySet = () => {
             <TopNavBar currentUser={currentUser} />
 
             {/* Main Content */}
-            <Box margin='0 auto' mt='3.5rem' maxW='80rem' >
+            <Box margin='0 auto' mt='3.5rem' maxW='55rem' >
                 {/* Heading + Main Content */}
                 <Box p='2.5rem' >
                     {/* Heading */}
@@ -92,8 +95,8 @@ const StudySet = () => {
 
                 {/* Created A Flex Inside a Flex Just To Create a Gray Divider */}
                 {/* Avatar + Settings For Study Set */}
-                <Flex w='71%' p='2.5rem' >
-                    <Flex pt='2.5rem' paddingX='0rem' w='100%' justify='space-between' borderTop='solid #EDF2F7 .2rem'>
+                <Flex p='2.5rem' >
+                    <Flex pt='2.5rem' w='100%' justify='space-between' borderTop='solid #EDF2F7 .2rem'>
                         {/* Avatar */}
                         <Flex>
                             <Avatar src={currentUser.photoURL} mr='0.5rem' />
@@ -104,7 +107,7 @@ const StudySet = () => {
                         </Flex>
                         {/* Settings for Study Set */}
                         <Flex>
-                            <IconButton _hover={{ color: '#ffcd1f' }} mr='.5rem' variant='ghost' icon={<AiOutlinePlus size='1.3rem' />} />
+                            <IconButton _hover={{ color: '#ffcd1f' }} mr='.5rem' variant='ghost' icon={<HiOutlinePlusCircle size='1.3rem' />} />
                             <IconButton _hover={{ color: '#ffcd1f' }} mr='.5rem' variant='ghost' icon={<BiPencil size='1.3rem' />} />
                             <IconButton _hover={{ color: '#ffcd1f' }} mr='.5rem' variant='ghost' icon={<FiUpload size='1.3rem' />} />
                             <IconButton _hover={{ color: '#ffcd1f' }} mr='.5rem' variant='ghost' icon={<RiInformationLine size='1.3rem' />} />
@@ -112,24 +115,11 @@ const StudySet = () => {
                         </Flex>
                     </Flex>
                 </Flex>
-
-                <Flex paddingX='2.5rem' w='71%'>
-                    <Textarea bg='white' resize={'none'} isReadOnly variant='unstyled'>
-                        This is the Integrated Chinese Level 1 Part 1 Lesson 6: Making Appointments. The vocabulary is based on Dialogue 1.
-                        --------------------------------------------------
-                        ~All of the words in Dialogue 1 have been added. Dialogue 2 will be in a separate set. Dialogue 1 vocabulary have been released go find them! (At this profile)
-                        ~Set Format~
-                        Chinese Character --- (Pinyin) English Meaning
-                        NO COPYING THIS SET! If so, then after these sets will be set as private or password.
-                        --------------------------…
-                    </Textarea>
-                </Flex>
-
             </Box>
 
             {/* Double Box Divs for Gray Background | All Flash Cards */}
-            <Box bg='#f6f7fb' mt='2.5rem' h='100vh' >
-                <Box margin='0 auto' maxW='80rem' >
+            <Box bg='#f6f7fb' h='100vh' >
+                <Box margin='0 auto' maxW='55rem' >
                     {/* All Flash Cards  */}
                     <Flex p='2.5rem' w='70%' align='center' justify='space-between' >
                         {/* Number of Terms In This Set */}
@@ -152,7 +142,7 @@ const StudySet = () => {
                     </Flex>
 
                     {/* Below is A List of Each Flash Card */}
-                    {studySetFlashCards.map((card, index) => (
+                    {/* {studySetFlashCards.map((card, index) => (
                         <SingleFlashCard
                             id={index}
                             key={index}
@@ -160,7 +150,7 @@ const StudySet = () => {
                             cardDefinition={card.definition}
                             cardStar={card.star}
                         />
-                    ))}
+                    ))} */}
 
                 </Box>
             </Box>

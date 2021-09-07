@@ -1,11 +1,12 @@
-import { Flex, Popover, PopoverTrigger, Button, PopoverBody, PopoverContent, Box, InputGroup, InputLeftElement, Input, Text } from "@chakra-ui/react"
+import { Flex, Popover, PopoverTrigger, Button, PopoverBody, PopoverContent, Box, InputGroup, InputLeftElement, Input, Text, Heading } from "@chakra-ui/react"
 
-import { useParams, Link as LinkRoute } from 'react-router-dom'
+import { Link as LinkRoute } from 'react-router-dom'
 
 import { RiArrowDownSLine, AiOutlineSearch } from 'react-icons/all';
+import SingleStudySet from "../SingleStudySet";
 
-const StudySets = () => {
-    const { userName } = useParams();
+
+const StudySets = ({ currentUser, studySetList, uniqueKeyList }) => {
     return (
         <>
             <Box>
@@ -19,7 +20,7 @@ const StudySets = () => {
                     </Flex>
                 </Box>
 
-                <Box w='100%' bg='#f6f7fb' h='100vh' pt='3rem'>
+                <Box w='100%' bg='#f6f7fb' h='100vh' pt='3rem' >
                     <Flex justify='space-between' maxW='80rem' margin='0 auto' >
                         <Popover w='50%'>
                             <PopoverTrigger w='50%'>
@@ -42,6 +43,20 @@ const StudySets = () => {
                             <Input pb='1rem' fontSize='sm' _focus={{ borderBottom: '3px solid #4257b2' }} borderBottom='3px solid #edeff4' variant='unstyled' h='2rem' type="tel" placeholder="Search your sets" />
                         </InputGroup>
                     </Flex>
+
+                    {/* Total List of Study Sets */}
+                    <Flex direction='column' maxW='80rem' margin='0 auto' mt='2rem' >
+                        {studySetList.map((currCard, index) => (
+                            <SingleStudySet
+                                currentUser={currentUser}
+                                title={currCard.title}
+                                totalCards={currCard.flashcards.length}
+                                key={uniqueKeyList[index]}
+                                id={uniqueKeyList[index]} />
+                        ))}
+
+                    </Flex>
+
                 </Box>
             </Box>
         </>

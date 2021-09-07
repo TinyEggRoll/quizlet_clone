@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 
 import { Box, Button, Flex, Heading, IconButton, Input, Link, Text, Textarea } from "@chakra-ui/react"
 import { animateScroll as scroll } from 'react-scroll'
@@ -10,17 +10,17 @@ import AddCardButton from "../Fragments/AddCardButton";
 import TopNavBar from '../Fragments/TopNavBar';
 
 import { useAuth } from '../../context/auth-context'
+import firebase from 'firebase'
 
 const CreateNewStudySet = () => {
-
-    const studySetTitleRef = useRef()
     const { currentUser } = useAuth();
 
     const [numFlashCards, setNumFlashCards] = useState({
-        title: 'testing',
+        title: '',
+        description: '',
         flashcards: [
-            { term: '', definition: '', cardIndex: '', id: Math.floor((Math.random() * 10000000) + 1) },
-            { term: '', definition: '', cardIndex: '', id: Math.floor((Math.random() * 10000000) + 1) }]
+            { term: '', definition: '', id: Math.floor((Math.random() * 10000000) + 1) },
+            { term: '', definition: '', id: Math.floor((Math.random() * 10000000) + 1) }]
     });
 
     const [tempTermCards, setTempTermCards] = useState([]);
@@ -53,9 +53,9 @@ const CreateNewStudySet = () => {
     }
 
     const updateTermHandler = (newTerm, cardId) => {
-        let indexOfMatchCard = tempTermCards.findIndex((obj) => obj.id === cardId)
+        let indexOfMatchedCard = tempTermCards.findIndex((obj) => obj.id === cardId)
 
-        if (indexOfMatchCard === -1) {
+        if (indexOfMatchedCard === -1) {
             setTempTermCards((prevFlashCards) => {
                 const updatedFlashCards = [...prevFlashCards];
                 const tempCard = { term: newTerm, id: cardId }
@@ -65,14 +65,40 @@ const CreateNewStudySet = () => {
         } else {
             setTempTermCards((prevFlashCards) => {
                 const updatedFlashCards = [...prevFlashCards];
-                updatedFlashCards[indexOfMatchCard].term = newTerm
+                updatedFlashCards[indexOfMatchedCard].term = newTerm
                 return updatedFlashCards;
             })
         }
     }
 
-    const createNewStudySet = () => {
+    const updateArrayValues = () => {
+        if (tempTermCards.length !== 0) {
+            tempTermCards.forEach((currFlashCard, currIndex) => {
+                let indexOfMatchedCard = numFlashCards.flashcards.findIndex((obj) => obj.id === tempTermCards[currIndex].id)
+                setNumFlashCards((prevFlashCards) => {
+                    const updatedFlashCards = { ...prevFlashCards };
+                    updatedFlashCards.flashcards[indexOfMatchedCard].term = currFlashCard.term
+                    return updatedFlashCards;
+                })
+            })
+        }
+        if (tempDefinitionCards.length !== 0) {
+            tempDefinitionCards.forEach((currFlashCard, currIndex) => {
+                let indexOfMatchedCard = numFlashCards.flashcards.findIndex((obj) => obj.id === tempDefinitionCards[currIndex].id)
+                setNumFlashCards((prevFlashCards) => {
+                    const updatedFlashCards = { ...prevFlashCards };
+                    updatedFlashCards.flashcards[indexOfMatchedCard].definition = currFlashCard.definition
+                    return updatedFlashCards;
+                })
+            })
+        }
+    }
 
+    const createNewStudySet = async () => {
+        await updateArrayValues()
+
+        const todoRef = firebase.database().ref('totalStudySets')
+        todoRef.push(numFlashCards)
     }
 
     const updateTitle = (e) => {
@@ -84,20 +110,29 @@ const CreateNewStudySet = () => {
         })
     }
 
-    const updateDefinitionHandler = (newDefinition, cardId) => {
-        let indexOfMatchCard = tempDefinitionCards.findIndex((obj) => obj.id === cardId)
+    const updateDescription = (e) => {
+        let currentDescription = e.target.value
+        setNumFlashCards((prevFlashCards) => {
+            const updatedFlashCards = { ...prevFlashCards }
+            updatedFlashCards.description = currentDescription
+            return updatedFlashCards;
+        })
+    }
 
-        if (indexOfMatchCard === -1) {
+    const updateDefinitionHandler = (newDefinition, cardId) => {
+        let indexOfMatchedCard = tempDefinitionCards.findIndex((obj) => obj.id === cardId)
+
+        if (indexOfMatchedCard === -1) {
             setTempDefinitionCards((prevFlashCards) => {
                 const updatedFlashCards = [...prevFlashCards];
-                const tempCard = { term: newDefinition, id: cardId }
+                const tempCard = { definition: newDefinition, id: cardId }
                 updatedFlashCards.push(tempCard);
                 return updatedFlashCards;
             })
         } else {
             setTempDefinitionCards((prevFlashCards) => {
                 const updatedFlashCards = [...prevFlashCards];
-                updatedFlashCards[indexOfMatchCard].term = newDefinition
+                updatedFlashCards[indexOfMatchedCard].definition = newDefinition
                 return updatedFlashCards;
             })
         }
@@ -120,9 +155,9 @@ const CreateNewStudySet = () => {
 
                 {/* Next Time use Grid || Description Input Fields */}
                 <Flex maxW='80rem' margin='0 auto' p='0 2.5rem' direction='column'>
-                    <Input onBlur={updateTitle} _focus={{ borderBottom: 'solid #4257b2 .125rem' }} mb='1.5rem' variant='filled' placeholder='Enter a title, like "Biology - Chapter 22: Evolution"' />
+                    <Input defaultValue={numFlashCards.title} onBlur={updateTitle} _focus={{ borderBottom: 'solid #4257b2 .125rem' }} mb='1.5rem' variant='filled' placeholder='Enter a title, like "Biology - Chapter 22: Evolution"' />
                     <Flex>
-                        <Textarea _focus={{ borderBottom: 'solid #4257b2 .125rem' }} resize={'none'} h='6.5rem' mr='1.5rem' variant='filled' flex='1' placeholder='Add a description...' />
+                        <Textarea _focus={{ borderBottom: 'solid #4257b2 .125rem' }} onBlur={updateDescription} resize={'none'} h='6.5rem' mr='1.5rem' variant='filled' flex='1' placeholder='Add a description...' />
                         <Flex flex='1' direction='column' ml='1.5rem'>
                             <Input _focus={{ borderBottom: 'solid #4257b2 .125rem' }} mb='1.5rem' variant='filled' placeholder='School name' />
                             <Input isDisabled variant='filled' placeholder='Course' />
