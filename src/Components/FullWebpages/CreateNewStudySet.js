@@ -2,6 +2,8 @@ import { useState } from 'react';
 
 import { Box, Button, Flex, Heading, IconButton, Input, Link, Text, Textarea } from "@chakra-ui/react"
 import { animateScroll as scroll } from 'react-scroll'
+import { useHistory } from 'react-router';
+import firebase from 'firebase'
 
 import { MdKeyboard, BiTransfer } from 'react-icons/all';
 
@@ -10,15 +12,18 @@ import AddCardButton from "../Fragments/AddCardButton";
 import TopNavBar from '../Fragments/TopNavBar';
 
 import { useAuth } from '../../context/auth-context'
-import firebase from 'firebase'
 
 const CreateNewStudySet = () => {
+    const [submitBtn, setSubmitBtn] = useState(true);
     const { currentUser } = useAuth();
+    const history = useHistory()
+    let studySetKey
+    let studySetKey1
 
     const [numFlashCards, setNumFlashCards] = useState({
         title: '',
         description: '',
-        flashcards: [
+        flashCards: [
             { term: '', definition: '', id: Math.floor((Math.random() * 10000000) + 1) },
             { term: '', definition: '', id: Math.floor((Math.random() * 10000000) + 1) }]
     });
@@ -37,8 +42,8 @@ const CreateNewStudySet = () => {
     const addNewCardHandler = () => {
         setNumFlashCards(prevFlashCards => {
             const updatedFlashCards = { ...prevFlashCards };
-            const tempCard = { term: '', definition: '', cardIndex: '', id: Math.floor((Math.random() * 10000000) + 1) }
-            updatedFlashCards.flashcards.push(tempCard);
+            const tempCard = { term: '', definition: '', id: Math.floor((Math.random() * 10000000) + 1) }
+            updatedFlashCards.flashCards.push(tempCard);
             return updatedFlashCards;
         });
         scrollToBottom();
@@ -47,7 +52,7 @@ const CreateNewStudySet = () => {
     const deleteCardHandler = (cardIndex) => {
         setNumFlashCards(prevFlashCards => {
             const updatedFlashCards = { ...prevFlashCards };
-            updatedFlashCards.flashcards.splice(cardIndex, 1)
+            updatedFlashCards.flashCards.splice(cardIndex, 1)
             return updatedFlashCards
         })
     }
@@ -71,23 +76,42 @@ const CreateNewStudySet = () => {
         }
     }
 
+    const updateDefinitionHandler = (newDefinition, cardId) => {
+        let indexOfMatchedCard = tempDefinitionCards.findIndex((obj) => obj.id === cardId)
+
+        if (indexOfMatchedCard === -1) {
+            setTempDefinitionCards((prevFlashCards) => {
+                const updatedFlashCards = [...prevFlashCards];
+                const tempCard = { definition: newDefinition, id: cardId }
+                updatedFlashCards.push(tempCard);
+                return updatedFlashCards;
+            })
+        } else {
+            setTempDefinitionCards((prevFlashCards) => {
+                const updatedFlashCards = [...prevFlashCards];
+                updatedFlashCards[indexOfMatchedCard].definition = newDefinition
+                return updatedFlashCards;
+            })
+        }
+    }
+
     const updateArrayValues = () => {
         if (tempTermCards.length !== 0) {
             tempTermCards.forEach((currFlashCard, currIndex) => {
-                let indexOfMatchedCard = numFlashCards.flashcards.findIndex((obj) => obj.id === tempTermCards[currIndex].id)
+                let indexOfMatchedCard = numFlashCards.flashCards.findIndex((obj) => obj.id === tempTermCards[currIndex].id)
                 setNumFlashCards((prevFlashCards) => {
                     const updatedFlashCards = { ...prevFlashCards };
-                    updatedFlashCards.flashcards[indexOfMatchedCard].term = currFlashCard.term
+                    updatedFlashCards.flashCards[indexOfMatchedCard].term = currFlashCard.term
                     return updatedFlashCards;
                 })
             })
         }
         if (tempDefinitionCards.length !== 0) {
             tempDefinitionCards.forEach((currFlashCard, currIndex) => {
-                let indexOfMatchedCard = numFlashCards.flashcards.findIndex((obj) => obj.id === tempDefinitionCards[currIndex].id)
+                let indexOfMatchedCard = numFlashCards.flashCards.findIndex((obj) => obj.id === tempDefinitionCards[currIndex].id)
                 setNumFlashCards((prevFlashCards) => {
                     const updatedFlashCards = { ...prevFlashCards };
-                    updatedFlashCards.flashcards[indexOfMatchedCard].definition = currFlashCard.definition
+                    updatedFlashCards.flashCards[indexOfMatchedCard].definition = currFlashCard.definition
                     return updatedFlashCards;
                 })
             })
@@ -97,8 +121,14 @@ const CreateNewStudySet = () => {
     const createNewStudySet = async () => {
         await updateArrayValues()
 
-        const todoRef = firebase.database().ref('totalStudySets')
-        todoRef.push(numFlashCards)
+        const todoRef = firebase.database().ref('totalStudySets').push();
+        studySetKey = todoRef.key;
+        await todoRef.set(numFlashCards)
+
+        setTimeout(() => {
+            history.push('/' + studySetKey)
+        }, 1000)
+
     }
 
     const updateTitle = (e) => {
@@ -119,23 +149,11 @@ const CreateNewStudySet = () => {
         })
     }
 
-    const updateDefinitionHandler = (newDefinition, cardId) => {
-        let indexOfMatchedCard = tempDefinitionCards.findIndex((obj) => obj.id === cardId)
 
-        if (indexOfMatchedCard === -1) {
-            setTempDefinitionCards((prevFlashCards) => {
-                const updatedFlashCards = [...prevFlashCards];
-                const tempCard = { definition: newDefinition, id: cardId }
-                updatedFlashCards.push(tempCard);
-                return updatedFlashCards;
-            })
-        } else {
-            setTempDefinitionCards((prevFlashCards) => {
-                const updatedFlashCards = [...prevFlashCards];
-                updatedFlashCards[indexOfMatchedCard].definition = newDefinition
-                return updatedFlashCards;
-            })
-        }
+
+    const loadingHandler = () => {
+        setSubmitBtn(false)
+        createNewStudySet()
     }
 
     return (
@@ -150,7 +168,13 @@ const CreateNewStudySet = () => {
                 {/* Create a new study set + Create Button*/}
                 <Flex maxW='80rem' h='6.875rem' margin='0 auto' mt='5.5rem' mb='1.5rem' p='0 2.5rem' align='center' justify='space-between'>
                     <Heading size='md'>Create a new study set</Heading>
-                    <Button onClick={createNewStudySet} id='bottomEnd' size='lg' bg='secondary' color='white'>Create</Button>
+                    {
+                        submitBtn ?
+                            <Button onClick={loadingHandler} id='bottomEnd' size='lg' bg='secondary' color='white'>Create</Button>
+                            :
+                            <Button isLoading loadingText='Saving...' id='bottomEnd' size='lg' bg='secondary' color='white' />
+                    }
+
                 </Flex>
 
                 {/* Next Time use Grid || Description Input Fields */}
@@ -185,12 +209,12 @@ const CreateNewStudySet = () => {
 
                 {/* Below Is Creation of Every Single Flash Card */}
                 <Flex bg='#f6f7fb' direction='column'>
-                    {numFlashCards.flashcards.map((currCard, index) => (
+                    {numFlashCards.flashCards.map((currCard, index) => (
                         <CreateNewSingleFlashCard
                             updateTermHandler={updateTermHandler}
                             updateDefinitionHandler={updateDefinitionHandler}
                             deleteCardHandler={deleteCardHandler}
-                            totalCards={numFlashCards.flashcards.length}
+                            totalCards={numFlashCards.flashCards.length}
                             term={currCard.term}
                             definition={currCard.definition}
                             cardIndex={index}

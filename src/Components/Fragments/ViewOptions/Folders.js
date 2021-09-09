@@ -19,7 +19,7 @@ const Folders = () => {
                     </Flex>
                 </Box>
 
-                <Box bg='#f6f7fb' h='100vh' pt='3rem'>
+                <Box bg='#f6f7fb' minH='100vh' pt='3rem'>
                     <Flex justify='space-between' maxW='80rem' margin='0 auto' >
                         <Popover w='50%'>
                             <PopoverTrigger w='50%'>

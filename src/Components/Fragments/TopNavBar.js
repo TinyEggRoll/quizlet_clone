@@ -49,10 +49,12 @@ const TopNavBar = ({ currentUser }) => {
             {/* Left Side Nav Bar */}
             <Flex h='100%' align='center'>
                 {/* Logos */}
-                <Flex mr='1rem'>
-                    <Image mr='10px' src={QuizletLogo} alt='quizlet logo' />
-                    <Image w='5rem' src={CloneLogo} alt='clone logo' />
-                </Flex>
+                <LinkRoute to={'/' + currentUser.displayName.replace(/ /g, '') + '/view/sets'}>
+                    <Flex mr='1rem'>
+                        <Image mr='10px' src={QuizletLogo} alt='quizlet logo' />
+                        <Image w='5rem' src={CloneLogo} alt='clone logo' />
+                    </Flex>
+                </LinkRoute>
                 {/* Your Library Button */}
                 <LinkRoute to={'/' + currentUser.displayName.replace(/ /g, '') + '/view/sets'}>
                     <Flex direction='column' justify='center'>

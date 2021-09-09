@@ -5,8 +5,7 @@ import { Link as LinkRoute } from 'react-router-dom'
 import { RiArrowDownSLine, AiOutlineSearch } from 'react-icons/all';
 import SingleStudySet from "../SingleStudySet";
 
-
-const StudySets = ({ currentUser, studySetList, uniqueKeyList }) => {
+const StudySets = ({ studySetList, uniqueKeyList }) => {
     return (
         <>
             <Box>
@@ -20,7 +19,7 @@ const StudySets = ({ currentUser, studySetList, uniqueKeyList }) => {
                     </Flex>
                 </Box>
 
-                <Box w='100%' bg='#f6f7fb' h='100vh' pt='3rem' >
+                <Box w='100%' bg='#f6f7fb' minH='100vh' pt='3rem' >
                     <Flex justify='space-between' maxW='80rem' margin='0 auto' >
                         <Popover w='50%'>
                             <PopoverTrigger w='50%'>
@@ -48,13 +47,11 @@ const StudySets = ({ currentUser, studySetList, uniqueKeyList }) => {
                     <Flex direction='column' maxW='80rem' margin='0 auto' mt='2rem' >
                         {studySetList.map((currCard, index) => (
                             <SingleStudySet
-                                currentUser={currentUser}
                                 title={currCard.title}
-                                totalCards={currCard.flashcards.length}
+                                totalCards={currCard.flashCards.length}
                                 key={uniqueKeyList[index]}
                                 id={uniqueKeyList[index]} />
                         ))}
-
                     </Flex>
 
                 </Box>

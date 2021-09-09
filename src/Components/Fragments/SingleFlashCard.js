@@ -13,14 +13,14 @@ const SingleFlashCard = ({ cardTerm, cardDefinition, cardStar }) => {
 
     return (
         <Flex paddingX='2.5rem'>
-            <Flex w='69%' border='solid #EDF2F7 .25rem' borderRadius='1rem' bg='white' mb='.625rem' >
+            <Flex w='55rem' border='solid #EDF2F7 .25rem' borderRadius='1rem' bg='white' mb='.625rem' >
                 {/* Term */}
                 <Flex paddingX='2rem' flex='25%'>
-                    <Textarea mt='1rem' fontSize='2xl' variant='unstyled' isReadOnly resize='none'>{cardTerm}</Textarea>
+                    <Textarea defaultValue={cardTerm} mt='1rem' variant='unstyled' isReadOnly resize='none' />
                 </Flex>
                 {/* Definition */}
                 <Flex paddingX='2rem' flex='50%' borderLeft='solid #EDF2F7 .20rem '>
-                    <Textarea mt='1rem' variant='unstyled' isReadOnly resize='none'>{cardDefinition}</Textarea>
+                    <Textarea defaultValue={cardDefinition} mt='1rem' variant='unstyled' isReadOnly resize='none' />
                 </Flex>
                 {/* Triple Icon Buttons */}
                 <Flex mt='1rem' >
