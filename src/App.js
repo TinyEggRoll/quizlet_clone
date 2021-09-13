@@ -26,8 +26,8 @@ function App() {
               <PrivateRoute exact path='/' component={Temp} />
               <PrivateRoute path='/:userName/view/:container' component={Dashboard} />
               <PrivateRoute path='/create-set' component={CreateNewStudySet} />
+              <PrivateRoute path='/:studySetID/edit' component={CreateNewStudySet} />
               <PrivateRoute path='/:studySetID' component={StudySet} />
-              <PrivateRoute path='/:studySetID/edit' component={StudySet} />
             </Switch>
 
           </Router>

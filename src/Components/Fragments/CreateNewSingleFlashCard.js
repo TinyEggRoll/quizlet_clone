@@ -32,14 +32,14 @@ const CreateNewSingleFlashCard = ({ term, definition, id, cardIndex, totalCards,
                 <Flex p='1.5rem .75rem 2rem .75rem'>
                     {/* Left Term */}
                     <Flex direction='column' w='50%' mr='3rem'>
-                        <Input ref={termInputRef} onBlur={termHandler} pb='.25rem' pl='0.5rem' _focus={{ borderBottom: 'solid #ffdc62 .25rem' }} borderBottom='solid black .25rem' variant='unstyled' fontSize='lg' placeholder='Enter term' />
+                        <Input ref={termInputRef} onBlur={termHandler} pb='.25rem' pl='0.5rem' defaultValue={term} _focus={{ borderBottom: 'solid #ffdc62 .25rem' }} borderBottom='solid black .25rem' variant='unstyled' fontSize='lg' placeholder='Enter term' />
                         <Flex>
                             <FormLabel mt='.25rem' color='gray.400'>TERM</FormLabel>
                         </Flex>
                     </Flex>
                     {/* Right Term */}
                     <Flex direction='column' w='40%' mr='3rem'>
-                        <Input ref={definitionInputRef} onBlur={definitionHandler} pb='.25rem' pl='0.5rem' _focus={{ borderBottom: 'solid #ffdc62 .25rem' }} borderBottom='solid black .25rem' variant='unstyled' fontSize='lg' placeholder='Enter definition' />
+                        <Input ref={definitionInputRef} onBlur={definitionHandler} pb='.25rem' pl='0.5rem' defaultValue={definition} _focus={{ borderBottom: 'solid #ffdc62 .25rem' }} borderBottom='solid black .25rem' variant='unstyled' fontSize='lg' placeholder='Enter definition' />
                         <Flex>
                             <FormLabel mt='.25rem' color='gray.400'>DEFINITION</FormLabel>
                         </Flex>

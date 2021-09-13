@@ -5,8 +5,9 @@ import {
     Button, Flex, Heading, IconButton, Popover, PopoverBody, PopoverContent, PopoverTrigger, Text, Textarea, Input, FormLabel, ModalFooter
 } from "@chakra-ui/react"
 
-import { useParams, useHistory } from 'react-router-dom'
+import { Link as LinkRoute, useParams, useHistory } from 'react-router-dom'
 import firebase from 'firebase'
+import ReactCardFlip from 'react-card-flip';
 
 import { MdDeleteForever, HiOutlinePlusCircle, RiArrowDownSLine, BiPencil, FiUpload, RiInformationLine, BiDotsHorizontalRounded, AiOutlineArrowLeft, AiOutlineArrowRight, MdKeyboard, BiFullscreen, FiCopy, MdRotateRight, FaPencilAlt, FaSpellCheck, BsFileEarmarkText, GiMatchHead, GiFallingBlob } from 'react-icons/all';
 
@@ -15,9 +16,11 @@ import SingleFlashCard from "../Fragments/SingleFlashCard";
 
 import { useAuth } from '../../context/auth-context'
 
+
 const StudySet = () => {
     const { currentUser } = useAuth();
     const { studySetID } = useParams()
+    const [isFlipped, setIsFlipped] = useState(false)
 
     const totalStudySets = firebase.database().ref('totalStudySets').child(studySetID)
 
@@ -26,14 +29,16 @@ const StudySet = () => {
     const [studySet, setStudySet] = useState({
         title: '',
         description: '',
-        flashCards: []
+        flashCards: [{
+            term: '',
+            definition: '',
+            id: ''
+        }]
     })
-
-
+    const [currentFlashCard, setCurrentFlashCard] = useState(0)
 
     useEffect(() => {
         const totalStudySets = firebase.database().ref('totalStudySets').child(studySetID)
-
         totalStudySets.get().then((snapshot) => {
             const tempStudySet = {
                 title: '',
@@ -48,19 +53,45 @@ const StudySet = () => {
             todos.flashCards.forEach((card) => {
                 tempStudySet.flashCards.push(card)
             })
-            setStudySet(tempStudySet)
-        })
 
+            setStudySet(tempStudySet)
+            setCurrentFlashCard(0)
+        })
     }, [])
 
     const deleteStudySet = async () => {
-
         totalStudySets.remove()
-
         setTimeout(() => {
             history.push('/' + currentUser.displayName.replace(/ /g, '') + '/view/sets')
         }, 2000)
     }
+
+    const flipHandler = () => {
+        setIsFlipped(!isFlipped)
+    }
+
+    const [move, setMove] = useState(false)
+
+    const incrementSlideHandler = () => {
+        setCurrentFlashCard((prevCard) => {
+            return prevCard + 1
+        })
+        setIsFlipped(false)
+
+        setMove(!move)
+        // setTimeout(() => {
+        // }, 500)
+    }
+
+    const decrementSlideHandler = () => {
+        setCurrentFlashCard((prevCard) => {
+            return prevCard - 1
+        })
+
+        setIsFlipped(false)
+    }
+
+
 
     return (
         <>
@@ -76,6 +107,7 @@ const StudySet = () => {
                     </Flex>
                     {/* Main Content */}
                     <Flex margin='0 auto'>
+
                         {/* Left Side Main Content */}
                         <Flex direction='column' justify='space-between' mr='6rem' >
                             {/* Group Top: Study */}
@@ -88,7 +120,7 @@ const StudySet = () => {
                                 <Button variant='ghost' isDisabled iconSpacing='1rem' justifyContent='flex-start' _hover={{ bg: '#ffcd1f' }} leftIcon={<BsFileEarmarkText size='1.5rem' color='#4257b2' />} >Text</Button>
                             </Flex>
                             {/* Group Bottom: Play */}
-                            <Flex direction='column' justify='space-between' w='158px' h='108px'>
+                            <Flex direction='column' justify='space-between' w='158px' h='108px' mt='1rem'>
                                 <Text pl='0.5rem' color='gray.400' fontSize='sm'>Play</Text>
                                 <Button variant='ghost' isDisabled iconSpacing='1rem' justifyContent='flex-start' _hover={{ bg: '#ffcd1f' }} leftIcon={<GiMatchHead size='1.5rem' color='#4257b2' />} >Match</Button>
                                 <Button variant='ghost' isDisabled iconSpacing='1rem' justifyContent='flex-start' _hover={{ bg: '#ffcd1f' }} leftIcon={<GiFallingBlob size='1.5rem' color='#4257b2' />} >Gravity</Button>
@@ -97,18 +129,37 @@ const StudySet = () => {
                         </Flex >
 
                         {/* Right Side Main Content */}
-                        <Flex direction='column'>
+                        <Flex direction='column' flex='1'>
                             {/* FlashCard SlideShow */}
-                            <Box w='560px' h='348px' border='solid #E2E8F0 .25rem' mb='1rem' >
-                                <Text textAlign='center' margin='auto 0'>FlashCards PlaceHolder</Text>
-                            </Box>
+                            <ReactCardFlip isFlipped={isFlipped} flipDirection="vertical" flipSpeedBackToFront='0.3' flipSpeedFrontToBack='0.3'>
+                                <Flex transform={move && 'translateX(16%) rotateY(-16deg) translateZ(0)'} transition='transform .24s ease,opacity .12s linear' as='button' h='21.25rem' w='34rem' boxShadow='0 0.3125rem 1.25rem 0 rgb(0 0 0 / 16%)' borderRadius='1rem' mb='1rem' p='3rem' flex='1' justify='center' align='center' onClick={flipHandler}>
+                                    <Heading fontWeight='400' >{studySet.flashCards[currentFlashCard].term}</Heading>
+                                </Flex>
+                                <Flex transition='transform .24s ease,opacity .12s linear' as='button' h='21.25rem' w='34rem' boxShadow='0 0.3125rem 1.25rem 0 rgb(0 0 0 / 16%)' borderRadius='1rem' mb='1rem' p='3rem' flex='1' justify='center' align='center' onClick={flipHandler}>
+                                    <Heading fontWeight='400'>{studySet.flashCards[currentFlashCard].definition}</Heading>
+                                </Flex>
+                            </ReactCardFlip>
                             {/* SlideShow Settings -> Left Arrow | Current Slide | Right Arrow  | Maximize Screen Btn */}
                             <Flex align='center' justify='flex-end'>
+                                {/* Left Or Right Button */}
                                 <Flex align='center' mr='5.5rem'>
-                                    <IconButton variant='ghost' icon={<AiOutlineArrowLeft size='1.5rem' />} />
-                                    <Text fontSize='sm' marginX='3rem'>1/25</Text>
-                                    <IconButton variant='ghost' icon={<AiOutlineArrowRight size='1.5rem' />} />
+                                    {
+                                        currentFlashCard === 0 ?
+                                            <IconButton isDisabled variant='ghost' icon={<AiOutlineArrowLeft size='1.5rem' />} />
+                                            :
+                                            <IconButton onClick={decrementSlideHandler} variant='ghost' icon={<AiOutlineArrowLeft size='1.5rem' />} />
+
+                                    }
+                                    <Text fontSize='sm' marginX='3rem'>{currentFlashCard + 1}/{studySet.flashCards.length}</Text>
+                                    {
+                                        currentFlashCard === studySet.flashCards.length - 1 ?
+                                            <IconButton isDisabled variant='ghost' icon={<AiOutlineArrowRight size='1.5rem' />} />
+                                            :
+                                            <IconButton onClick={incrementSlideHandler} variant='ghost' icon={<AiOutlineArrowRight size='1.5rem' />} />
+
+                                    }
                                 </Flex>
+                                {/* Full Screen Mode */}
                                 <Flex textAlign='end'>
                                     <IconButton mr='1rem' variant='ghost' icon={<MdKeyboard size='1.5rem' />} />
                                     <IconButton variant='ghost' icon={<BiFullscreen size='1.5rem' />} />
@@ -135,7 +186,9 @@ const StudySet = () => {
                         <Flex>
                             <IconButton _hover={{ color: '#ffcd1f' }} mr='.5rem' isDisabled variant='ghost' icon={<HiOutlinePlusCircle size='1.3rem' />} />
                             <Tooltip hasArrow label='Edit' fontSize='sm' color='white' bg='primary' borderRadius='0.2rem' p='0.5rem'>
-                                <IconButton _hover={{ color: '#ffcd1f' }} mr='.5rem' variant='ghost' icon={<BiPencil size='1.3rem' />} />
+                                <LinkRoute to={'/' + studySetID + '/edit'}>
+                                    <IconButton _hover={{ color: '#ffcd1f' }} mr='.5rem' variant='ghost' icon={<BiPencil size='1.3rem' />} />
+                                </LinkRoute>
                             </Tooltip>
                             <IconButton _hover={{ color: '#ffcd1f' }} mr='.5rem' isDisabled variant='ghost' icon={<FiUpload size='1.3rem' />} />
                             <IconButton _hover={{ color: '#ffcd1f' }} mr='.5rem' isDisabled variant='ghost' icon={<RiInformationLine size='1.3rem' />} />
@@ -172,10 +225,10 @@ const StudySet = () => {
                     <Textarea defaultValue={studySet.description} mt='1rem' variant='unstyled' isReadOnly resize='none' />
                 </Flex>
 
-            </Box>
+            </Box >
 
             {/* Double Box Divs for Gray Background | All Flash Cards */}
-            <Box bg='#f6f7fb' minH='100vh' >
+            < Box bg='#f6f7fb' minH='100vh' >
                 <Box margin='0 auto' maxW='55rem' >
                     {/* All Flash Cards  */}
                     <Flex p='2.5rem' align='center' justify='space-between' >
@@ -210,7 +263,7 @@ const StudySet = () => {
                     ))}
 
                 </Box>
-            </Box>
+            </Box >
         </>
     )
 }

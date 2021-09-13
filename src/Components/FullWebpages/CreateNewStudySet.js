@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import { Box, Button, Flex, Heading, IconButton, Input, Link, Text, Textarea } from "@chakra-ui/react"
 import { animateScroll as scroll } from 'react-scroll'
-import { useHistory } from 'react-router';
+import { useHistory, useLocation, useParams } from 'react-router';
 import firebase from 'firebase'
 
 import { MdKeyboard, BiTransfer } from 'react-icons/all';
@@ -15,10 +15,12 @@ import { useAuth } from '../../context/auth-context'
 
 const CreateNewStudySet = () => {
     const [submitBtn, setSubmitBtn] = useState(true);
-    const { currentUser } = useAuth();
     const history = useHistory()
+    const location = useLocation()
+    const lastUrlSegment = location.pathname.substring(location.pathname.lastIndexOf('/') + 1)
+    const studySetID = location.pathname.substring(location.pathname.indexOf('/') + 1, location.pathname.lastIndexOf('/'))
+    const { currentUser } = useAuth()
     let studySetKey
-    let studySetKey1
 
     const [numFlashCards, setNumFlashCards] = useState({
         title: '',
@@ -27,6 +29,32 @@ const CreateNewStudySet = () => {
             { term: '', definition: '', id: Math.floor((Math.random() * 10000000) + 1) },
             { term: '', definition: '', id: Math.floor((Math.random() * 10000000) + 1) }]
     });
+
+    useEffect(() => {
+        if (lastUrlSegment === 'edit') {
+            console.log('ive been hit')
+            const totalStudySets = firebase.database().ref('totalStudySets').child(studySetID)
+            totalStudySets.get().then((snapshot) => {
+                const tempStudySet = {
+                    title: '',
+                    description: '',
+                    flashCards: []
+                }
+
+                const todos = snapshot.val()
+                tempStudySet.title = todos.title
+                tempStudySet.description = todos.description
+
+                todos.flashCards.forEach((card) => {
+                    tempStudySet.flashCards.push(card)
+                })
+                setNumFlashCards(tempStudySet)
+                console.log(tempStudySet)
+            })
+        }
+    }, [])
+
+
 
     const [tempTermCards, setTempTermCards] = useState([]);
     const [tempDefinitionCards, setTempDefinitionCards] = useState([]);
@@ -170,7 +198,7 @@ const CreateNewStudySet = () => {
                     <Heading size='md'>Create a new study set</Heading>
                     {
                         submitBtn ?
-                            <Button onClick={loadingHandler} id='bottomEnd' size='lg' bg='secondary' color='white'>Create</Button>
+                            <Button onClick={loadingHandler} id='bottomEnd' size='lg' bg='secondary' color='white'>{lastUrlSegment === 'edit' ? 'Done' : 'Create'}</Button>
                             :
                             <Button isLoading loadingText='Saving...' id='bottomEnd' size='lg' bg='secondary' color='white' />
                     }
@@ -181,7 +209,7 @@ const CreateNewStudySet = () => {
                 <Flex maxW='80rem' margin='0 auto' p='0 2.5rem' direction='column'>
                     <Input defaultValue={numFlashCards.title} onBlur={updateTitle} _focus={{ borderBottom: 'solid #4257b2 .125rem' }} mb='1.5rem' variant='filled' placeholder='Enter a title, like "Biology - Chapter 22: Evolution"' />
                     <Flex>
-                        <Textarea _focus={{ borderBottom: 'solid #4257b2 .125rem' }} onBlur={updateDescription} resize={'none'} h='6.5rem' mr='1.5rem' variant='filled' flex='1' placeholder='Add a description...' />
+                        <Textarea _focus={{ borderBottom: 'solid #4257b2 .125rem' }} defaultValue={numFlashCards.description} onBlur={updateDescription} resize={'none'} h='6.5rem' mr='1.5rem' variant='filled' flex='1' placeholder='Add a description...' />
                         <Flex flex='1' direction='column' ml='1.5rem'>
                             <Input _focus={{ borderBottom: 'solid #4257b2 .125rem' }} mb='1.5rem' variant='filled' placeholder='School name' />
                             <Input isDisabled variant='filled' placeholder='Course' />
@@ -206,7 +234,7 @@ const CreateNewStudySet = () => {
                         <IconButton bg='#3ccfcf' size='sm' icon={<MdKeyboard color='white' size='1.5rem' />} />
                     </Flex>
                 </Flex>
-
+                {console.log(numFlashCards)}
                 {/* Below Is Creation of Every Single Flash Card */}
                 <Flex bg='#f6f7fb' direction='column'>
                     {numFlashCards.flashCards.map((currCard, index) => (
