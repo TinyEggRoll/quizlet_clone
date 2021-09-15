@@ -8,6 +8,7 @@ import Logo2 from '../../assets/Quizlet_Logo2.svg'
 
 const MobileLogin = () => {
     return (
+        // Screen Display for Mobile Users
         <Flex direction='column' justify='space-between' align='center'>
             <Flex p='2rem'>
                 <Image mr='10px' htmlHeight='100px' htmlWidth='100px' src={Logo1} alt='logo 1' />

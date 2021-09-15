@@ -1,27 +1,20 @@
 import { useState, useEffect } from 'react';
 
+import { MdKeyboard, BiTransfer } from 'react-icons/all';
+
 import { Box, Button, Flex, Heading, IconButton, Input, Link, Text, Textarea } from "@chakra-ui/react"
+
 import { animateScroll as scroll } from 'react-scroll'
-import { useHistory, useLocation, useParams } from 'react-router';
+import { useHistory, useLocation } from 'react-router';
 import firebase from 'firebase'
 
-import { MdKeyboard, BiTransfer } from 'react-icons/all';
 
 import CreateNewSingleFlashCard from "../Fragments/CreateNewSingleFlashCard";
 import AddCardButton from "../Fragments/AddCardButton";
 import TopNavBar from '../Fragments/TopNavBar';
-
 import { useAuth } from '../../context/auth-context'
 
 const CreateNewStudySet = () => {
-    const [submitBtn, setSubmitBtn] = useState(true);
-    const history = useHistory()
-    const location = useLocation()
-    const lastUrlSegment = location.pathname.substring(location.pathname.lastIndexOf('/') + 1)
-    const studySetID = location.pathname.substring(location.pathname.indexOf('/') + 1, location.pathname.lastIndexOf('/'))
-    const { currentUser } = useAuth()
-    let studySetKey
-
     const [numFlashCards, setNumFlashCards] = useState({
         title: '',
         description: '',
@@ -29,11 +22,20 @@ const CreateNewStudySet = () => {
             { term: '', definition: '', id: Math.floor((Math.random() * 10000000) + 1) },
             { term: '', definition: '', id: Math.floor((Math.random() * 10000000) + 1) }]
     });
+    const [tempTermCards, setTempTermCards] = useState([]);
+    const [tempDefinitionCards, setTempDefinitionCards] = useState([]);
+    const [submitBtn, setSubmitBtn] = useState(true);
+    const [error, setError] = useState('')
+    const { currentUser } = useAuth()
+    const history = useHistory()
+    const location = useLocation()
+    const lastUrlSegment = location.pathname.substring(location.pathname.lastIndexOf('/') + 1)
+    const studySetID = location.pathname.substring(location.pathname.indexOf('/') + 1, location.pathname.lastIndexOf('/'))
+    let studySetKey
 
     useEffect(() => {
         if (lastUrlSegment === 'edit') {
-            console.log('ive been hit')
-            const totalStudySets = firebase.database().ref('totalStudySets').child(studySetID)
+            const totalStudySets = firebase.database().ref('users/' + currentUser.uid + '/totalStudySets').child(studySetID)
             totalStudySets.get().then((snapshot) => {
                 const tempStudySet = {
                     title: '',
@@ -41,31 +43,17 @@ const CreateNewStudySet = () => {
                     flashCards: []
                 }
 
-                const todos = snapshot.val()
-                tempStudySet.title = todos.title
-                tempStudySet.description = todos.description
+                const firebaseSet = snapshot.val()
+                tempStudySet.title = firebaseSet.title
+                tempStudySet.description = firebaseSet.description
 
-                todos.flashCards.forEach((card) => {
+                firebaseSet.flashCards.forEach((card) => {
                     tempStudySet.flashCards.push(card)
                 })
                 setNumFlashCards(tempStudySet)
-                console.log(tempStudySet)
             })
         }
-    }, [])
-
-
-
-    const [tempTermCards, setTempTermCards] = useState([]);
-    const [tempDefinitionCards, setTempDefinitionCards] = useState([]);
-
-    const scrollToBottom = () => {
-        scroll.scrollToBottom();
-    }
-
-    const scrollToTop = () => {
-        scroll.scrollToTop();
-    }
+    }, [currentUser.uid, lastUrlSegment, studySetID])
 
     const addNewCardHandler = () => {
         setNumFlashCards(prevFlashCards => {
@@ -74,7 +62,7 @@ const CreateNewStudySet = () => {
             updatedFlashCards.flashCards.push(tempCard);
             return updatedFlashCards;
         });
-        scrollToBottom();
+        scroll.scrollToBottom();
     }
 
     const deleteCardHandler = (cardIndex) => {
@@ -148,9 +136,15 @@ const CreateNewStudySet = () => {
 
     const createNewStudySet = async () => {
         await updateArrayValues()
+        let todoRef
 
-        const todoRef = firebase.database().ref('totalStudySets').push();
-        studySetKey = todoRef.key;
+        if (lastUrlSegment === 'edit') {
+            todoRef = firebase.database().ref('users/' + currentUser.uid + '/totalStudySets').child(studySetID)
+            studySetKey = studySetID
+        } else {
+            todoRef = firebase.database().ref('users/' + currentUser.uid + '/totalStudySets').push();
+            studySetKey = todoRef.key;
+        }
         await todoRef.set(numFlashCards)
 
         setTimeout(() => {
@@ -177,18 +171,20 @@ const CreateNewStudySet = () => {
         })
     }
 
-
-
     const loadingHandler = () => {
-        setSubmitBtn(false)
-        createNewStudySet()
+        if (numFlashCards.title === '') {
+            setError('EmptyTitle')
+
+        } else {
+            setSubmitBtn(false)
+            createNewStudySet()
+        }
     }
 
     return (
         <>
             {/* Top Nav Bar */}
             <TopNavBar currentUser={currentUser} />
-
             {/* Entire Main Content */}
             <Box >
 
@@ -202,15 +198,19 @@ const CreateNewStudySet = () => {
                             :
                             <Button isLoading loadingText='Saving...' id='bottomEnd' size='lg' bg='secondary' color='white' />
                     }
-
                 </Flex>
 
-                {/* Next Time use Grid || Description Input Fields */}
+                {/* Form Input Fields */}
                 <Flex maxW='80rem' margin='0 auto' p='0 2.5rem' direction='column'>
-                    <Input defaultValue={numFlashCards.title} onBlur={updateTitle} _focus={{ borderBottom: 'solid #4257b2 .125rem' }} mb='1.5rem' variant='filled' placeholder='Enter a title, like "Biology - Chapter 22: Evolution"' />
-                    <Flex>
+                    {/* Title */}
+                    <Input borderBottom={error ? 'solid red .25rem' : ''} defaultValue={numFlashCards.title} onBlur={updateTitle} _focus={{ borderBottom: 'solid #4257b2 .125rem' }} variant='filled' placeholder='Enter a title, like "Biology - Chapter 22: Evolution"' />
+                    {/* If User Inputs No Title, Display Notification */}
+                    {error && <span style={{ color: 'red' }}>Title Must be Included</span>}
+                    <Flex mt='1.5rem'>
+                        {/* Description */}
                         <Textarea _focus={{ borderBottom: 'solid #4257b2 .125rem' }} defaultValue={numFlashCards.description} onBlur={updateDescription} resize={'none'} h='6.5rem' mr='1.5rem' variant='filled' flex='1' placeholder='Add a description...' />
                         <Flex flex='1' direction='column' ml='1.5rem'>
+                            {/* School Name | Course */}
                             <Input _focus={{ borderBottom: 'solid #4257b2 .125rem' }} mb='1.5rem' variant='filled' placeholder='School name' />
                             <Input isDisabled variant='filled' placeholder='Course' />
                         </Flex>
@@ -229,12 +229,11 @@ const CreateNewStudySet = () => {
                             <Text fontSize='sm'>Only editable by me</Text>
                             <Link ml='4rem' textAlign='end' color='secondary'>Change</Link>
                         </Flex>
-
                         <IconButton _hover={{ bg: 'gray.500' }} isDisabled bg='gray.500' size='sm' icon={<BiTransfer color='white' size='1.5rem' />} />
                         <IconButton bg='#3ccfcf' size='sm' icon={<MdKeyboard color='white' size='1.5rem' />} />
                     </Flex>
                 </Flex>
-                {console.log(numFlashCards)}
+
                 {/* Below Is Creation of Every Single Flash Card */}
                 <Flex bg='#f6f7fb' direction='column'>
                     {numFlashCards.flashCards.map((currCard, index) => (
@@ -254,7 +253,7 @@ const CreateNewStudySet = () => {
                     <AddCardButton addNewCardHandler={addNewCardHandler} />
 
                     {/* Scroll To Top Button */}
-                    <Button onClick={scrollToTop}>Click Me To Scroll Up</Button>
+                    <Button onClick={() => scroll.scrollToTop()}>Click Me To Scroll Up</Button>
                 </Flex>
             </Box>
 

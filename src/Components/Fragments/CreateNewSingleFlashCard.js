@@ -1,8 +1,8 @@
 import { useRef } from "react";
 
-import { background, Box, Flex, FormLabel, IconButton, Input, Text } from "@chakra-ui/react"
-
 import { BiImageAlt, FiTrash, AiOutlineMenu } from 'react-icons/all';
+
+import { Box, Flex, FormLabel, IconButton, Input, Text } from "@chakra-ui/react"
 
 const CreateNewSingleFlashCard = ({ term, definition, id, cardIndex, totalCards, deleteCardHandler, updateTermHandler, updateDefinitionHandler }) => {
     const termInputRef = useRef()
@@ -15,6 +15,7 @@ const CreateNewSingleFlashCard = ({ term, definition, id, cardIndex, totalCards,
     const definitionHandler = () => {
         updateDefinitionHandler(definitionInputRef.current.value, id)
     }
+
     return (
         <>
             <Flex w='80rem' h='12rem' margin='0 auto' bg='white' direction='column' mt='1.5rem' border='solid #EDF2F7 .25rem' borderRadius='1rem'>
@@ -37,7 +38,7 @@ const CreateNewSingleFlashCard = ({ term, definition, id, cardIndex, totalCards,
                             <FormLabel mt='.25rem' color='gray.400'>TERM</FormLabel>
                         </Flex>
                     </Flex>
-                    {/* Right Term */}
+                    {/* Right Definition */}
                     <Flex direction='column' w='40%' mr='3rem'>
                         <Input ref={definitionInputRef} onBlur={definitionHandler} pb='.25rem' pl='0.5rem' defaultValue={definition} _focus={{ borderBottom: 'solid #ffdc62 .25rem' }} borderBottom='solid black .25rem' variant='unstyled' fontSize='lg' placeholder='Enter definition' />
                         <Flex>

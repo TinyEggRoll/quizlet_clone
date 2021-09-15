@@ -9,10 +9,7 @@ const Temp = () => {
     // Redirects to create URL | Eliminates White Space Between (F & L) name -> localhost:3000/_USERNAME_ 
     history.push('/' + currentUser.displayName.replace(/ /g, '') + '/view/sets')
 
-    return (
-        <>
-        </>
-    )
+    return (<></>)
 }
 
 export default Temp

@@ -1,5 +1,7 @@
 import { useState } from 'react';
 
+import { RiArrowDownSLine, AiOutlineSearch, AiOutlineBell, FiFolderPlus, IoMdCopy } from 'react-icons/all';
+
 import {
     Text, Flex, Image, Button, Avatar, Input, InputGroup, InputLeftElement, IconButton, PopoverTrigger, PopoverContent, PopoverBody, Popover,
     Box, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, useDisclosure, Modal, ModalFooter, FormControl, FormLabel
@@ -7,18 +9,16 @@ import {
 
 import { Link as LinkRoute, useLocation, useHistory } from 'react-router-dom'
 
-
 import QuizletLogo from '../../assets/Quizlet_Logo_White1.svg'
 import CloneLogo from '../../assets/Quizlet_Logo_White2.svg'
-import { RiArrowDownSLine, AiOutlineSearch, AiOutlineBell, FiFolderPlus, IoMdCopy } from 'react-icons/all';
-
 import { useAuth } from '../../context/auth-context'
 
-
 const TopNavBar = ({ currentUser }) => {
+    const [folderName, setFolderName] = useState('');
     const { logOut } = useAuth();
     const history = useHistory()
     const location = useLocation()
+    const { isOpen, onOpen, onClose } = useDisclosure();
 
     const logoutHandler = async () => {
         try {
@@ -28,10 +28,6 @@ const TopNavBar = ({ currentUser }) => {
             console.log("There is an error in top nav bar!")
         }
     }
-
-
-    const { isOpen, onOpen, onClose } = useDisclosure();
-    const [folderName, setFolderName] = useState('');
 
     const folderNameChangeHandler = (newFolderName) => {
         setFolderName(newFolderName.target.value);
@@ -148,7 +144,6 @@ const TopNavBar = ({ currentUser }) => {
                         </PopoverBody>
                     </PopoverContent>
                 </Popover>
-
             </Flex>
         </Flex>
     )

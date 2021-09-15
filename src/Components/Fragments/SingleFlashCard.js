@@ -1,16 +1,8 @@
-import { Flex, IconButton, Textarea } from "@chakra-ui/react"
-
 import { BiPencil, AiFillStar, FiVolume2 } from 'react-icons/all';
 
-const SingleFlashCard = ({ cardTerm, cardDefinition, cardStar }) => {
-    let star
+import { Flex, IconButton, Textarea } from "@chakra-ui/react"
 
-    if (cardStar) {
-        star = <IconButton _hover={{}} mr='.25rem' variant='ghost' icon={<AiFillStar color='#ffcd1f' size='1.5rem' />} />
-    } else {
-        star = <IconButton _hover={{ color: '#ffcd1f' }} mr='.25rem' variant='ghost' icon={<AiFillStar size='1.5rem' />} />
-    }
-
+const SingleFlashCard = ({ cardTerm, cardDefinition }) => {
     return (
         <Flex paddingX='2.5rem'>
             <Flex w='55rem' border='solid #EDF2F7 .25rem' borderRadius='1rem' bg='white' mb='.625rem' >
@@ -25,11 +17,11 @@ const SingleFlashCard = ({ cardTerm, cardDefinition, cardStar }) => {
                 {/* Triple Icon Buttons */}
                 <Flex mt='1rem' >
                     {/* Star Button */}
-                    {star}
+                    <IconButton isDisabled _hover={{ color: '#ffcd1f' }} mr='.25rem' variant='ghost' icon={<AiFillStar size='1.5rem' />} />
                     {/* Volume Button */}
-                    <IconButton _hover={{ color: '#ffcd1f' }} mr='.25rem' variant='ghost' icon={<FiVolume2 size='1.5rem' />} />
+                    <IconButton isDisabled _hover={{ color: '#ffcd1f' }} mr='.25rem' variant='ghost' icon={<FiVolume2 size='1.5rem' />} />
                     {/* Edit Button */}
-                    <IconButton _hover={{ color: '#ffcd1f' }} mr='.25rem' variant='ghost' icon={<BiPencil size='1.5rem' />} />
+                    <IconButton isDisabled _hover={{ color: '#ffcd1f' }} mr='.25rem' variant='ghost' icon={<BiPencil size='1.5rem' />} />
                 </Flex>
             </Flex>
         </Flex>

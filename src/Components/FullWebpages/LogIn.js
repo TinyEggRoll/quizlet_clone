@@ -1,5 +1,7 @@
 import { useState } from "react";
 
+import { FcGoogle, FaMask } from 'react-icons/all';
+
 import { Flex, Image, Text, Box, Link, Button, Input, FormControl, FormLabel, FormHelperText, } from "@chakra-ui/react"
 import { useHistory } from 'react-router-dom'
 
@@ -7,20 +9,17 @@ import QuizletLogo from '../../assets/Quizlet_Logo1.svg'
 import CloneLogo from '../../assets/Quizlet_Logo2.svg'
 import Illustration from '../../assets/illustration.png'
 import login_Yellow_Mark from '../../assets/login_Yellow_Mark.svg'
-import { FcGoogle, FaMask } from 'react-icons/all';
-
 import { useAuth } from '../../context/auth-context'
 
+
 const LogIn = (props) => {
+    const [submitBtn, setSubmitBtn] = useState(true);
     const { googleLogin } = useAuth()
     const history = useHistory()
-
-    const [submitBtn, setSubmitBtn] = useState(true);
 
     const buttonChangeHandler = () => {
         setSubmitBtn(false);
     }
-
 
     const googleLoginHandler = async () => {
         try {

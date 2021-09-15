@@ -1,36 +1,31 @@
 import { useState, useEffect } from 'react'
 
-import { useParams, useHistory } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import firebase from 'firebase'
 
 import DashboardTopHeader from '../Fragments/DashboardTopHeader'
 import TopNavBar from '../Fragments/TopNavBar'
 import StudySets from '../Fragments/ViewOptions/StudySets'
 import Folders from '../Fragments/ViewOptions/Folders'
-
 import { useAuth } from '../../context/auth-context'
 
 const Dashboard = () => {
     const [studySetList, setStudySetList] = useState([])
-    const [uniqueKeyList, setUniqueKeyList] = useState([])
-
     const { currentUser } = useAuth()
     const { container } = useParams()
 
     useEffect(() => {
-        const totalStudySets = firebase.database().ref('totalStudySets')
-        totalStudySets.on('value', (snapshot) => {
+        const totalStudySets = firebase.database().ref('users/' + currentUser.uid + '/totalStudySets')
+        totalStudySets.get().then((snapshot) => {
+            const firebaseSet = snapshot.val()
             const tempList = []
-            const tempUniqueKey = []
 
-            const todos = snapshot.val()
-
-            for (let id in todos) {
-                tempUniqueKey.unshift(id)
-                tempList.unshift(todos[id])
+            for (let id in firebaseSet) {
+                const temp = firebaseSet[id]
+                temp.id = id
+                tempList.unshift(temp)
             }
             setStudySetList(tempList)
-            setUniqueKeyList(tempUniqueKey)
         })
     }, [])
 
@@ -38,7 +33,7 @@ const Dashboard = () => {
         <>
             <TopNavBar currentUser={currentUser} />
             <DashboardTopHeader currentUser={currentUser} />
-            {container === 'sets' && <StudySets studySetList={studySetList} uniqueKeyList={uniqueKeyList} />}
+            {container === 'sets' && <StudySets studySetList={studySetList} />}
             {container === 'folders' && <Folders />}
         </>
     )

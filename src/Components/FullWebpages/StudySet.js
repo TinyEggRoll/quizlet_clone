@@ -1,31 +1,22 @@
 import { useState, useEffect } from 'react'
 
+import { MdDeleteForever, HiOutlinePlusCircle, RiArrowDownSLine, BiPencil, FiUpload, RiInformationLine, BiDotsHorizontalRounded, AiOutlineArrowLeft, AiOutlineArrowRight, MdKeyboard, BiFullscreen, FiCopy, MdRotateRight, FaPencilAlt, FaSpellCheck, BsFileEarmarkText, GiMatchHead, GiFallingBlob } from 'react-icons/all';
+
 import {
-    useDisclosure, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, FormControl, Tooltip, Avatar, Box,
-    Button, Flex, Heading, IconButton, Popover, PopoverBody, PopoverContent, PopoverTrigger, Text, Textarea, Input, FormLabel, ModalFooter
+    useDisclosure, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, Tooltip, Avatar, Box,
+    Button, Flex, Heading, IconButton, Popover, PopoverBody, PopoverContent, PopoverTrigger, Text, Textarea, ModalFooter
 } from "@chakra-ui/react"
 
 import { Link as LinkRoute, useParams, useHistory } from 'react-router-dom'
 import firebase from 'firebase'
 import ReactCardFlip from 'react-card-flip';
 
-import { MdDeleteForever, HiOutlinePlusCircle, RiArrowDownSLine, BiPencil, FiUpload, RiInformationLine, BiDotsHorizontalRounded, AiOutlineArrowLeft, AiOutlineArrowRight, MdKeyboard, BiFullscreen, FiCopy, MdRotateRight, FaPencilAlt, FaSpellCheck, BsFileEarmarkText, GiMatchHead, GiFallingBlob } from 'react-icons/all';
-
 import TopNavBar from "../Fragments/TopNavBar";
 import SingleFlashCard from "../Fragments/SingleFlashCard";
-
 import { useAuth } from '../../context/auth-context'
 
 
 const StudySet = () => {
-    const { currentUser } = useAuth();
-    const { studySetID } = useParams()
-    const [isFlipped, setIsFlipped] = useState(false)
-
-    const totalStudySets = firebase.database().ref('totalStudySets').child(studySetID)
-
-    const { isOpen, onOpen, onClose } = useDisclosure();
-    const history = useHistory()
     const [studySet, setStudySet] = useState({
         title: '',
         description: '',
@@ -36,52 +27,50 @@ const StudySet = () => {
         }]
     })
     const [currentFlashCard, setCurrentFlashCard] = useState(0)
+    const [move, setMove] = useState(false)
+    const [isFlipped, setIsFlipped] = useState(false)
+    const { currentUser } = useAuth();
+    const { studySetID } = useParams()
+    const history = useHistory()
+    const totalStudySets = firebase.database().ref('users/' + currentUser.uid + '/totalStudySets').child(studySetID)
+    const { isOpen, onOpen, onClose } = useDisclosure();
 
     useEffect(() => {
-        const totalStudySets = firebase.database().ref('totalStudySets').child(studySetID)
         totalStudySets.get().then((snapshot) => {
+            const todos = snapshot.val()
+
             const tempStudySet = {
-                title: '',
-                description: '',
+                title: todos.title,
+                description: todos.description,
                 flashCards: []
             }
-
-            const todos = snapshot.val()
-            tempStudySet.title = todos.title
-            tempStudySet.description = todos.description
 
             todos.flashCards.forEach((card) => {
                 tempStudySet.flashCards.push(card)
             })
 
             setStudySet(tempStudySet)
-            setCurrentFlashCard(0)
         })
     }, [])
 
-    const deleteStudySet = async () => {
+    const deleteStudySet = () => {
         totalStudySets.remove()
-        setTimeout(() => {
-            history.push('/' + currentUser.displayName.replace(/ /g, '') + '/view/sets')
-        }, 2000)
+        history.push('/' + currentUser.displayName.replace(/ /g, '') + '/view/sets')
     }
 
     const flipHandler = () => {
         setIsFlipped(!isFlipped)
     }
 
-    const [move, setMove] = useState(false)
-
     const incrementSlideHandler = () => {
         setCurrentFlashCard((prevCard) => {
             return prevCard + 1
         })
-        setIsFlipped(false)
 
+        setIsFlipped(false)
         setMove(!move)
-        // setTimeout(() => {
-        // }, 500)
     }
+
 
     const decrementSlideHandler = () => {
         setCurrentFlashCard((prevCard) => {
@@ -89,9 +78,8 @@ const StudySet = () => {
         })
 
         setIsFlipped(false)
+        setMove(!move)
     }
-
-
 
     return (
         <>
@@ -132,10 +120,10 @@ const StudySet = () => {
                         <Flex direction='column' flex='1'>
                             {/* FlashCard SlideShow */}
                             <ReactCardFlip isFlipped={isFlipped} flipDirection="vertical" flipSpeedBackToFront='0.3' flipSpeedFrontToBack='0.3'>
-                                <Flex transform={move && 'translateX(16%) rotateY(-16deg) translateZ(0)'} transition='transform .24s ease,opacity .12s linear' as='button' h='21.25rem' w='34rem' boxShadow='0 0.3125rem 1.25rem 0 rgb(0 0 0 / 16%)' borderRadius='1rem' mb='1rem' p='3rem' flex='1' justify='center' align='center' onClick={flipHandler}>
+                                <Flex as='button' h='21.25rem' w='34rem' boxShadow={move ? '0 0.3125rem 1.25rem 0 rgb(0 0 0 / 16%)' : '0 0.3125rem 1.25rem .5rem  rgb(0 255 0 /16%)'} borderRadius='1rem' mb='1rem' p='3rem' flex='1' justify='center' align='center' onClick={flipHandler}>
                                     <Heading fontWeight='400' >{studySet.flashCards[currentFlashCard].term}</Heading>
                                 </Flex>
-                                <Flex transition='transform .24s ease,opacity .12s linear' as='button' h='21.25rem' w='34rem' boxShadow='0 0.3125rem 1.25rem 0 rgb(0 0 0 / 16%)' borderRadius='1rem' mb='1rem' p='3rem' flex='1' justify='center' align='center' onClick={flipHandler}>
+                                <Flex as='button' h='21.25rem' w='34rem' boxShadow={move ? '0 0.3125rem 1.25rem 0 rgb(0 0 0 / 16%)' : '0 0.3125rem 1.25rem .5rem rgb(0 255 0 /16%)'} borderRadius='1rem' mb='1rem' p='3rem' flex='1' justify='center' align='center' onClick={flipHandler}>
                                     <Heading fontWeight='400'>{studySet.flashCards[currentFlashCard].definition}</Heading>
                                 </Flex>
                             </ReactCardFlip>
@@ -169,7 +157,6 @@ const StudySet = () => {
                     </Flex>
                 </Box>
 
-
                 {/* Created A Flex Inside a Flex Just To Create a Gray Divider */}
                 {/* Avatar + Settings For Study Set */}
                 <Flex p='2.5rem' >
@@ -186,7 +173,9 @@ const StudySet = () => {
                         <Flex>
                             <IconButton _hover={{ color: '#ffcd1f' }} mr='.5rem' isDisabled variant='ghost' icon={<HiOutlinePlusCircle size='1.3rem' />} />
                             <Tooltip hasArrow label='Edit' fontSize='sm' color='white' bg='primary' borderRadius='0.2rem' p='0.5rem'>
+                                {/* Redirect to Edit Study Set Page */}
                                 <LinkRoute to={'/' + studySetID + '/edit'}>
+                                    {/* Edit Button */}
                                     <IconButton _hover={{ color: '#ffcd1f' }} mr='.5rem' variant='ghost' icon={<BiPencil size='1.3rem' />} />
                                 </LinkRoute>
                             </Tooltip>
@@ -216,15 +205,15 @@ const StudySet = () => {
                                     </ModalFooter>
                                 </ModalContent>
                             </Modal>
+                            {/* Delete Study Set Button */}
                             <IconButton onClick={onClose} _hover={{ color: '#ffcd1f' }} isDisabled variant='ghost' icon={<BiDotsHorizontalRounded size='1.3rem' />} />
                         </Flex>
                     </Flex>
                 </Flex>
-
+                {/* Description */}
                 <Flex paddingX='2.5rem' pt='0rem' pb='1rem'>
                     <Textarea defaultValue={studySet.description} mt='1rem' variant='unstyled' isReadOnly resize='none' />
                 </Flex>
-
             </Box >
 
             {/* Double Box Divs for Gray Background | All Flash Cards */}
@@ -258,10 +247,8 @@ const StudySet = () => {
                             key={card.id}
                             cardTerm={card.term}
                             cardDefinition={card.definition}
-                            cardStar={''}
                         />
                     ))}
-
                 </Box>
             </Box >
         </>

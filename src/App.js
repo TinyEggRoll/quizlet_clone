@@ -15,6 +15,8 @@ import { AuthProvider } from './context/auth-context';
 function App() {
   return (
     <ChakraProvider theme={myNewTheme}>
+
+      {/* Browser Pages */}
       <BrowserView>
         <AuthProvider>
           <Router>
@@ -23,10 +25,16 @@ function App() {
               <Route exact path='/login' component={LogIn} />
 
               {/* User Page */}
+
+              {/* Redirect Page To Allow For Firebase Access */}
               <PrivateRoute exact path='/' component={Temp} />
+              {/* HomePage/ List of Study Sets */}
               <PrivateRoute path='/:userName/view/:container' component={Dashboard} />
+              {/* Create Study Set Page*/}
               <PrivateRoute path='/create-set' component={CreateNewStudySet} />
+              {/* Edit Study Set Page */}
               <PrivateRoute path='/:studySetID/edit' component={CreateNewStudySet} />
+              {/* Access Specific Study Set Page */}
               <PrivateRoute path='/:studySetID' component={StudySet} />
             </Switch>
 
@@ -35,6 +43,7 @@ function App() {
       </BrowserView>
 
       <MobileView>
+        {/* Mobile Page For Mobile Users */}
         <MobileLogin />
       </MobileView>
 
