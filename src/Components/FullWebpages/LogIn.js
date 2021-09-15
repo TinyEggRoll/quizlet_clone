@@ -54,7 +54,7 @@ const LogIn = (props) => {
             <Flex flex='1.5' direction='column' align='center' maxW='60rem' m='auto' mt='5rem'>
                 {/* Sign (up/in) Link */}
                 <Flex w='70%' justify='flex-start' >
-                    <Link fontSize='2rem' pr='1rem'> Sign up</Link>
+                    <Link fontSize='2rem' pr='2rem' color='gray.400'> Sign up</Link>
                     <Flex direction='column'>
                         <Link fontSize='2rem'> Log in</Link>
                         <Link>
@@ -75,9 +75,9 @@ const LogIn = (props) => {
                 <Flex w='70%' >
                     <FormControl>
                         <FormLabel>Username</FormLabel>
-                        <Input isDisabled mb='1rem' pl='.5rem' placeholder='Username and PW is not accepted. Please Use Google Login' borderBottom='4px solid black' variant='unstyled' type="email" />
+                        <Input isDisabled pb='.5rem' mb='1rem' pl='.5rem' placeholder='Username and PW is not accepted. Please Use Google Login' borderBottom='4px solid black' variant='unstyled' type="email" />
                         <FormLabel>Password</FormLabel>
-                        <Input pl='.5rem' borderBottom='4px solid black' variant='unstyled' type="password" />
+                        <Input pl='.5rem' pb='.5rem' borderBottom='4px solid black' variant='unstyled' type="password" />
                         <Flex justify='flex-end'>
                             <FormHelperText mb='1rem'> <Link color='secondary'>Forgot?</Link></FormHelperText>
                         </Flex >
