@@ -24,7 +24,7 @@ function App() {
               {/* Login Page */}
               <Route exact path='/login' component={LogIn} />
 
-              {/* User Page */}
+              {/* All User Pages */}
 
               {/* Redirect Page To Allow For Firebase Access */}
               <PrivateRoute exact path='/' component={Temp} />
