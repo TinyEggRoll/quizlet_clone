@@ -29,7 +29,7 @@ This is my 2nd react project. A clone of my favorite website, Quizlet. I learned
 * Flash Card Favorites
 * ...
 
-## ⌨️ Tech Stacks
+## Tech Stacks
 * **ReactJs**: FrontEnd
 * **Chakra-UI**: CSS
 * **Firebase**: BackEnd + Real Time DB + Hosting
@@ -37,7 +37,8 @@ This is my 2nd react project. A clone of my favorite website, Quizlet. I learned
 * **FuseJs**: Fuzzy Searching
 * **React Icons**: Icons
 
-## ⌨️ Acknowledgements
+## Acknowledgements
+* [Quizlet](https://quizlet.com/)
 * [Firebase](https://firebase.google.com/)
 * [React Router](https://reactrouter.com/)
 * [React Card Flip](https://www.npmjs.com/package/react-card-flip)
