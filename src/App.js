@@ -24,7 +24,6 @@ function App() {
               <Route exact path='/' component={LogIn} />
 
               {/* Below are All User's Pages */}
-
               {/* HomePage/ List of Study Sets */}
               <PrivateRoute path='/:userName/view/:container' component={Dashboard} />
               {/* Create Study Set Page*/}
