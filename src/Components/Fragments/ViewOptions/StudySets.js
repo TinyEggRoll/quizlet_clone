@@ -63,13 +63,13 @@ const StudySets = ({ studySetList }) => {
 
                 {/* Total List of Study Sets */}
                 <Flex direction='column' maxW='80rem' margin='0 auto' mt='2rem' >
-                    {flashCardResults.map((currCard) => (
+                    {flashCardResults.length !== 0 ? flashCardResults.map((currCard) => (
                         <SingleStudySet
                             title={currCard.title}
                             totalCards={currCard.flashCards.length}
                             key={currCard.id}
                             id={currCard.id} />
-                    ))}
+                    )) : <Text mt='2rem'>No Study Sets. Please Create one.</Text>}
                 </Flex>
             </Box>
         </>

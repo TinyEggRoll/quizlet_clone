@@ -174,8 +174,8 @@ const CreateNewStudySet = () => {
     const loadingHandler = () => {
         if (numFlashCards.title === '') {
             setError('EmptyTitle')
-
         } else {
+            setError('')
             setSubmitBtn(false)
             createNewStudySet()
         }

@@ -5,7 +5,6 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import myNewTheme from './assets/theme'
 import PrivateRoute from './Components/PrivateRoute'
 import Dashboard from './Components/FullWebpages/Dashboard';
-import Temp from './Components/FullWebpages/Temp';
 import LogIn from './Components/FullWebpages/LogIn';
 import MobileLogin from './Components/FullWebpages/MobileLogin';
 import CreateNewStudySet from './Components/FullWebpages/CreateNewStudySet';
@@ -22,12 +21,10 @@ function App() {
           <Router>
             <Switch>
               {/* Login Page */}
-              <Route exact path='/login' component={LogIn} />
+              <Route exact path='/' component={LogIn} />
 
-              {/* All User Pages */}
+              {/* Below are All User's Pages */}
 
-              {/* Redirect Page To Allow For Firebase Access */}
-              <PrivateRoute exact path='/' component={Temp} />
               {/* HomePage/ List of Study Sets */}
               <PrivateRoute path='/:userName/view/:container' component={Dashboard} />
               {/* Create Study Set Page*/}
@@ -36,8 +33,8 @@ function App() {
               <PrivateRoute path='/:studySetID/edit' component={CreateNewStudySet} />
               {/* Access Specific Study Set Page */}
               <PrivateRoute path='/:studySetID' component={StudySet} />
-            </Switch>
 
+            </Switch>
           </Router>
         </AuthProvider>
       </BrowserView>

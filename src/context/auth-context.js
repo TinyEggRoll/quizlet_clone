@@ -17,6 +17,10 @@ export function AuthProvider({ children }) {
         return auth.signInWithPopup(provider);
     }
 
+    const anonymousLogin = () => {
+        return auth.signInAnonymously();
+    }
+
     const logOut = () => {
         return auth.signOut()
     }
@@ -33,6 +37,7 @@ export function AuthProvider({ children }) {
     const value = {
         currentUser,
         googleLogin,
+        anonymousLogin,
         logOut
     }
 

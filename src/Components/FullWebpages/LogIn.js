@@ -14,7 +14,7 @@ import { useAuth } from '../../context/auth-context'
 
 const LogIn = (props) => {
     const [submitBtn, setSubmitBtn] = useState(true);
-    const { googleLogin } = useAuth()
+    const { googleLogin, anonymousLogin } = useAuth()
     const history = useHistory()
 
     const buttonChangeHandler = () => {
@@ -23,11 +23,25 @@ const LogIn = (props) => {
 
     const googleLoginHandler = async () => {
         try {
-            await googleLogin()
-            history.push('/')
-
+            await googleLogin().then((currentUser) => {
+                setTimeout(() => {
+                    history.push('/' + currentUser.user.displayName.replace(/ /g, '') + '/view/sets')
+                }, 500)
+            })
         } catch {
             console.log('There is an error in GOOGLE LOGIN loginJS')
+        }
+    }
+
+    const anonymousLoginHandler = async () => {
+        try {
+            await anonymousLogin().then((currentUser) => {
+                setTimeout(() => {
+                    history.push('/' + currentUser.user.uid + '/view/sets')
+                }, 500)
+            })
+        } catch {
+            console.log("There is an error in Anonymous login loginJS")
         }
     }
 
@@ -64,10 +78,10 @@ const LogIn = (props) => {
                 </Flex>
                 {/* Log in Quick Buttons */}
                 <Flex w='70%' direction='column'>
-                    <Button onClick={googleLoginHandler} h='5rem' size='lg' mt='3rem' mb='2rem' iconSpacing='10rem' pr='14rem' leftIcon={<FcGoogle size='2.5rem' />} colorScheme='facebook' variant='outline'>
+                    <Button onClick={googleLoginHandler} h='4.4rem' size='lg' mt='3rem' mb='2rem' iconSpacing='10rem' pr='14rem' leftIcon={<FcGoogle size='2.5rem' />} colorScheme='facebook' variant='outline'>
                         Log in With Google
                     </Button>
-                    <Button isDisabled h='5rem' size='lg' mb='2rem' iconSpacing='10rem' pr='13.4rem' leftIcon={<FaMask size='2.5rem' />} colorScheme='facebook' variant='outline'>
+                    <Button onClick={anonymousLoginHandler} h='4.4rem' size='lg' mb='2rem' iconSpacing='10rem' pr='13.4rem' leftIcon={<FaMask size='2.5rem' />} colorScheme='facebook' variant='outline'>
                         Log in Anonymously
                     </Button>
                 </Flex>
@@ -75,7 +89,7 @@ const LogIn = (props) => {
                 <Flex w='70%' >
                     <FormControl>
                         <FormLabel>Username</FormLabel>
-                        <Input isDisabled pb='.5rem' mb='1rem' pl='.5rem' placeholder='Username and PW is not accepted. Please Use Google Login' borderBottom='4px solid black' variant='unstyled' type="email" />
+                        <Input isDisabled pb='.5rem' mb='1rem' pl='.5rem' placeholder='Username and PW is not accepted. Please Use Google or Anonymous Login' borderBottom='4px solid black' variant='unstyled' type="email" />
                         <FormLabel>Password</FormLabel>
                         <Input pl='.5rem' pb='.5rem' borderBottom='4px solid black' variant='unstyled' type="password" />
                         <Flex justify='flex-end'>
@@ -83,9 +97,9 @@ const LogIn = (props) => {
                         </Flex >
                         {
                             submitBtn ?
-                                <Button w='100%' onClick={buttonChangeHandler} color='white' bg='secondary'>Log In</Button>
+                                <Button _hover={{ backgroundColor: '#28a7a7' }} w='100%' h='4.4rem' onClick={buttonChangeHandler} color='white' bg='secondary'>Log In</Button>
                                 :
-                                <Button w='100%' color='white' bg='secondary' isLoading loadingText='Logging in' />
+                                <Button w='100%' h='5rem' color='white' bg='secondary' isLoading loadingText='Logging in' />
                         }
                         <Flex justify='space-between'>
                             <FormHelperText >Remember to log out on shared devices</FormHelperText>

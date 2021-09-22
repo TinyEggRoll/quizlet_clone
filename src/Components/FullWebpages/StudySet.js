@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 
-import { MdDeleteForever, HiOutlinePlusCircle, RiArrowDownSLine, BiPencil, FiUpload, RiInformationLine, BiDotsHorizontalRounded, AiOutlineArrowLeft, AiOutlineArrowRight, MdKeyboard, BiFullscreen, FiCopy, MdRotateRight, FaPencilAlt, FaSpellCheck, BsFileEarmarkText, GiMatchHead, GiFallingBlob } from 'react-icons/all';
+import { FaMask, MdDeleteForever, HiOutlinePlusCircle, RiArrowDownSLine, BiPencil, FiUpload, RiInformationLine, BiDotsHorizontalRounded, AiOutlineArrowLeft, AiOutlineArrowRight, MdKeyboard, BiFullscreen, FiCopy, MdRotateRight, FaPencilAlt, FaSpellCheck, BsFileEarmarkText, GiMatchHead, GiFallingBlob } from 'react-icons/all';
 
 import {
     useDisclosure, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, Tooltip, Avatar, Box,
@@ -29,6 +29,7 @@ const StudySet = () => {
     const [currentFlashCard, setCurrentFlashCard] = useState(0)
     const [move, setMove] = useState(false)
     const [isFlipped, setIsFlipped] = useState(false)
+
     const { currentUser } = useAuth();
     const { studySetID } = useParams()
     const history = useHistory()
@@ -55,7 +56,10 @@ const StudySet = () => {
 
     const deleteStudySet = () => {
         totalStudySets.remove()
-        history.push('/' + currentUser.displayName.replace(/ /g, '') + '/view/sets')
+        if (currentUser.isAnonymous === true ? history.push('/' + currentUser.uid + '/view/sets')
+            :
+            history.push('/' + currentUser.displayName.replace(/ /g, '') + '/view/sets')
+        );
     }
 
     const flipHandler = () => {
@@ -163,10 +167,10 @@ const StudySet = () => {
                     <Flex pt='2.5rem' w='100%' justify='space-between' borderTop='solid #EDF2F7 .2rem'>
                         {/* Avatar */}
                         <Flex>
-                            <Avatar src={currentUser.photoURL} mr='0.5rem' />
+                            <Avatar src={currentUser.photoURL} mr='0.5rem' icon={<FaMask size='2rem' color='white' />} bg='#242222' />
                             <Flex direction='column' justify='center' align='flex-start'>
                                 <Text mb='0.2rem' fontSize='x-small' color='gray.400'>Created by</Text>
-                                <Text fontWeight='600' fontSize='sm'>{currentUser.displayName}</Text>
+                                <Text fontWeight='600' fontSize='sm'>{currentUser.displayName ? currentUser.displayName : '_anonymous user_'}</Text>
                             </Flex>
                         </Flex>
                         {/* Settings for Study Set */}

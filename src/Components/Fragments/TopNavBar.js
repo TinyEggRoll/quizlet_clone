@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { RiArrowDownSLine, AiOutlineSearch, AiOutlineBell, FiFolderPlus, IoMdCopy } from 'react-icons/all';
+import { FaMask, RiArrowDownSLine, AiOutlineSearch, AiOutlineBell, FiFolderPlus, IoMdCopy } from 'react-icons/all';
 
 import {
     Text, Flex, Image, Button, Avatar, Input, InputGroup, InputLeftElement, IconButton, PopoverTrigger, PopoverContent, PopoverBody, Popover,
@@ -23,7 +23,7 @@ const TopNavBar = ({ currentUser }) => {
     const logoutHandler = async () => {
         try {
             await logOut()
-            history.push('/login')
+            history.push('/')
         } catch {
             console.log("There is an error in top nav bar!")
         }
@@ -38,6 +38,9 @@ const TopNavBar = ({ currentUser }) => {
         setFolderName('');
     }
 
+    const redirectURL = (currentUser.isAnonymous ? '/' + currentUser.uid + '/view/sets' : '/' + currentUser.displayName.replace(/ /g, '') + '/view/sets')
+
+
     return (
         //  Whole Nav Bar 
         <Flex w='100%' p='1rem' bg='primary' h='3.5rem' pos='fixed' top='0' justify='space-between' zIndex='1'>
@@ -45,14 +48,14 @@ const TopNavBar = ({ currentUser }) => {
             {/* Left Side Nav Bar */}
             <Flex h='100%' align='center'>
                 {/* Logos */}
-                <LinkRoute to={'/' + currentUser.displayName.replace(/ /g, '') + '/view/sets'}>
+                <LinkRoute to={redirectURL}>
                     <Flex mr='1rem'>
                         <Image mr='10px' src={QuizletLogo} alt='quizlet logo' />
                         <Image w='5rem' src={CloneLogo} alt='clone logo' />
                     </Flex>
                 </LinkRoute>
                 {/* Your Library Button */}
-                <LinkRoute to={'/' + currentUser.displayName.replace(/ /g, '') + '/view/sets'}>
+                <LinkRoute to={redirectURL}>
                     <Flex direction='column' justify='center'>
                         <Button h='2rem' id='bob' mt='.7rem' mb='.63rem' mr='1rem' _hover={{ bg: 'primary' }} fontSize='sm' color='#fff' bg='primary' rightIcon={<RiArrowDownSLine color='#fff' size='1.5rem' />}>Your Library </Button>
                         {/* If the page is Create-set, it will not render the yellow underline tone. */}
@@ -113,7 +116,7 @@ const TopNavBar = ({ currentUser }) => {
                 <Popover>
                     <PopoverTrigger>
                         <Button mr='1rem' variant='unstyled' >
-                            <Avatar size='sm' src={currentUser.photoURL} />
+                            <Avatar size='sm' src={currentUser.photoURL} icon={<FaMask size='1.5rem' color='black' />} bg='white' />
                         </Button>
                     </PopoverTrigger>
                     <PopoverContent w='15rem'>
@@ -122,10 +125,10 @@ const TopNavBar = ({ currentUser }) => {
 
                                 {/* 1/3 | Avatar + Name + Email */}
                                 <Flex justify='flex-start' align='center' borderBottom='solid .25rem #f6f7fb' flex='1' p='.5rem 1.5rem'>
-                                    <Avatar size='sm' mr='1rem' src={currentUser.photoURL} />
+                                    <Avatar size='sm' mr='1rem' src={currentUser.photoURL} icon={<FaMask size='1.5rem' color='white' />} bg='#242222' />
                                     <Flex direction='column' maxW='8.5rem' >
-                                        <Text fontSize='sm' isTruncated >{currentUser.displayName}</Text>
-                                        <Text fontSize='sm' isTruncated >{currentUser.email}</Text>
+                                        <Text fontSize='sm' isTruncated >{currentUser.displayName ? currentUser.displayName : '_Anonymous User_'}</Text>
+                                        <Text fontSize='sm' isTruncated >{currentUser.email ? currentUser.email : '_Anonymous Email_'}</Text>
                                     </Flex>
                                 </Flex>
 

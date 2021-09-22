@@ -34,7 +34,13 @@ const Folders = () => {
                         </PopoverContent>
                     </Popover>
                 </Flex>
+
+                {/* List of All Folders */}
+                <Flex maxW='80rem' margin='0 auto'>
+                    <Text mt='4rem'>Folders are currently not available, come back later 😀</Text>
+                </Flex>
             </Box>
+
         </>
     )
 }
