@@ -8,6 +8,8 @@ This is my 2nd react project. A clone of my favorite website, Quizlet. I learned
 ![Set](https://user-images.githubusercontent.com/60073154/133512176-0c35c69d-5377-4163-9cbe-9f0f1791d644.png)
 ![EditSet](https://user-images.githubusercontent.com/60073154/133512336-debcdabf-c8f7-4620-9f31-53d3fe1da275.png)
 
+A few more examples are shown in the folder 'before_after_pics'
+
 ## Demo
 
 ### https://quizlet-clone-1d600.web.app
