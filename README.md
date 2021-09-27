@@ -18,7 +18,7 @@ A few more examples are shown in the folder 'before_after_pics'
 
 ## Features
 
-- Create, Read, Updated, & Delete Study Sets
+- Create, Read, Update, & Delete Study Sets
 - User Authentication
 - Anonymous & Google Login
 - Fuzzy Search Bar (Fuse.js)
